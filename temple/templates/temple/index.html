@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojo Temple - Campo de Batalla</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+        nav { background: rgba(20, 10, 10, 0.95) !important; border-bottom: 3px solid #ff4500; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; }
+        .navbar-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: #ff4500 !important; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+        .navbar-brand i { font-size: 2rem; text-shadow: 0 0 20px #ff4500; margin-right: 10px; }
+        .nav-link { color: #ccc !important; font-weight: 600; transition: all 0.3s ease; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+        .nav-link:hover { color: #ff4500 !important; text-shadow: 0 0 10px #ff4500; }
+       .hero { min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: url('/static/images/FONDO PAGINA.png') center/cover no-repeat; padding: 2rem; }
+        @keyframes fire-flicker { 0%, 100% { text-shadow: 0 0 20px #ff4500, 0 0 40px #ff2200, 0 0 60px #ff0000; } 50% { text-shadow: 0 0 30px #ff6a1a, 0 0 50px #ff4500, 0 0 80px #ff2200; } }
+        .hero::before { padding-top: 6rem;content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(255, 69, 0, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 0, 0, 0.2) 0%, transparent 50%); animation: fire-flicker 3s infinite; }
+        .hero-content {position: relative;z-index: 1;text-align: center;max-width: 900px;}
+        .logo-circle { width: 150px; height: 150px; margin: 0 auto 2rem; border: 4px solid #ff4500; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; box-shadow: 0 0 40px rgba(255, 69, 0, 0.8); animation: fire-flicker 3s infinite; }
+        .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; color: #fff; text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 0 30px #ff4500, 0 0 60px #ff2200; animation: fire-flicker 2.5s infinite; }
+        .hero p { font-size: 1.2rem; color: #ccc; margin-bottom: 3rem; line-height: 1.8; }
+        .btn-batalla { display: inline-block; padding: 1rem 3rem; font-size: 1.1rem; border: 3px solid #ff4500; background: linear-gradient(135deg, #ff4500, #ff2200); color: #fff; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; border-radius: 5px; transition: all 0.3s ease; cursor: pointer; box-shadow: 0 0 20px rgba(255, 69, 0, 0.5); }
+        .btn-batalla:hover { box-shadow: 0 0 50px rgba(255, 34, 0, 0.9); transform: translateY(-5px); color: #fff; text-decoration: none; }
+        section { padding: 5rem 0; border-top: 3px solid #ff4500; }
+        section h2 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: #ff4500; margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 20px #ff4500; text-align: center; }
+        .eventos { background: rgba(20, 10, 10, 0.5); }
+        .evento-card { background: rgba(255, 69, 0, 0.05); border: 2px solid rgba(255, 69, 0, 0.3); border-radius: 10px; padding: 2rem; transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column; }
+        .evento-card:hover { border-color: #ff4500; background: rgba(255, 69, 0, 0.1); box-shadow: 0 0 30px rgba(255, 69, 0, 0.4); transform: translateY(-10px); }
+        .evento-card h3 { color: #ff4500; margin-bottom: 1rem; font-weight: 700; }
+        .evento-meta { color: #999; font-size: 0.9rem; margin-bottom: 1rem; }
+        .evento-meta i { color: #ff4500; margin-right: 0.5rem; }
+        .evento-card p { color: #ccc; flex-grow: 1; margin-bottom: 1rem; }
+        .galeria { background: rgba(20, 10, 10, 0.3); }
+        .galeria-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .galeria-item { position: relative; overflow: hidden; border-radius: 10px; border: 2px solid rgba(255, 69, 0, 0.3); aspect-ratio: 1; cursor: pointer; transition: all 0.3s ease; }
+        .galeria-item:hover { border-color: #ff4500; box-shadow: 0 0 30px rgba(255, 69, 0, 0.5); transform: scale(1.05); }
+        .galeria-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255, 69, 0, 0.2), rgba(255, 34, 0, 0.2)); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #ff4500; }
+        .galeria-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
+        .galeria-item:hover .galeria-overlay { opacity: 1; }
+        .galeria-titulo { color: #fff; font-weight: 700; text-align: center; }
+        .planes { background: rgba(20, 10, 10, 0.5); }
+        .plan-card { background: rgba(255, 69, 0, 0.05); border: 2px solid rgba(255, 69, 0, 0.3); border-radius: 10px; padding: 2rem; transition: all 0.3s ease; position: relative; }
+        .plan-card.destacado { border-color: #ff4500; background: rgba(255, 69, 0, 0.15); transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 69, 0, 0.5); }
+        .plan-card:hover { border-color: #ff4500; background: rgba(255, 69, 0, 0.1); box-shadow: 0 0 30px rgba(255, 69, 0, 0.4); transform: translateY(-10px); }
+        .plan-badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #ff4500, #ff2200); color: #fff; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; }
+        .plan-nombre { color: #ff4500; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; margin-top: 1rem; }
+        .plan-precio { font-size: 2.5rem; color: #fff; font-weight: 900; margin-bottom: 1rem; }
+        .plan-descripcion { color: #999; margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .plan-beneficios { list-style: none; margin-bottom: 2rem; }
+        .plan-beneficios li { color: #ccc; padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 69, 0, 0.2); }
+        .plan-card { padding-bottom: 1.5rem; }
+        .btn-plan { width: 100%; padding: 0.8rem; background: rgba(255, 69, 0, 0.2); border: 2px solid #ff4500; color: #ff4500; border-radius: 5px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; }
+        .btn-plan:hover { background: #ff4500; color: #fff; box-shadow: 0 0 20px rgba(255, 69, 0, 0.6); }
+        footer { background: rgba(20, 10, 10, 0.95); border-top: 3px solid #ff4500; padding: 2rem 0; text-align: center; color: #ccc; }
+        footer a { color: #ff4500; text-decoration: none; margin: 0 1rem; }
+        footer a:hover { text-shadow: 0 0 10px #ff4500; }
+        .plan-card p { margin: 0; }
+        @media (max-width: 1200px) {
+            .col-xl-12 { flex: 0 0 100%; max-width: 100%; }
+        }
+    </style>
+    <style>
+        .btn-auth {
+
+    padding: 0.7rem 1.4rem;
+
+    border: 2px solid #ff4500;
+
+    border-radius: 8px;
+
+    color: #ffffff !important;
+
+    text-decoration: none !important;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    background: rgba(255, 69, 0, 0.08);
+
+    transition: all 0.3s ease;
+
+    box-shadow:
+    0 0 10px rgba(255, 69, 0, 0.25);
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 0.5rem;
+
+    font-family: 'Roboto', sans-serif;
+}
+
+.btn-auth i{
+    color:#ff4500;
+}
+
+.btn-auth:hover {
+
+    background: #471300;
+
+    color: white !important;
+
+    text-decoration: none !important;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+    0 0 20px rgba(255,69,0,0.8);
+}
+
+.btn-auth:hover i{
+    color:white;
+}
+
+.register-btn {
+
+    padding: 0.7rem 1.4rem;
+
+    border: 2px solid #ff4500;
+
+    border-radius: 8px;
+
+    color: #ffffff !important;
+
+    text-decoration: none !important;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    background: rgba(255, 69, 0, 0.08);
+
+    transition: all 0.3s ease;
+
+    box-shadow:
+    0 0 10px rgba(255, 69, 0, 0.25);
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 0.5rem;
+}
+
+.logout-btn{
+    cursor:pointer;
+}
+.navbar-wrapper{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding-left:4rem;
+
+    padding-right:4rem;
+}
+
+.navbar-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:1rem;
+
+    margin-right:auto;
+}
+
+.navbar-nav{
+
+    margin-left:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:1rem;
+}
+.comunidad-temple{
+
+    margin-top:3rem;
+
+    text-align:center;
+
+    max-width:900px;
+
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.comunidad-texto{
+
+    color:#d5d5d5;
+
+    font-size:1.2rem;
+
+    line-height:1.8;
+
+    margin-bottom:2rem;
+
+    text-shadow:
+    0 0 10px rgba(0,0,0,0.5);
+}
+
+.comunidad-texto span{
+
+    color:#ff4500;
+
+    font-weight:700;
+
+    text-shadow:
+    0 0 10px #ff4500;
+}
+
+.comunidad-botones{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:1.5rem;
+
+    flex-wrap:wrap;
+}
+
+.btn-comunidad{
+
+    padding:1rem 2rem;
+
+    border:2px solid #ff4500;
+
+    border-radius:10px;
+
+    color:white !important;
+
+    text-decoration:none !important;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    background:rgba(255,69,0,0.08);
+
+    transition:0.3s ease;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:0.7rem;
+
+    box-shadow:
+    0 0 15px rgba(255,69,0,0.15);
+}
+
+.btn-comunidad:hover{
+
+    background:#ff4500;
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 0 25px rgba(255,69,0,0.7);
+
+    color:white !important;
+}
+#fireTransition{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    radial-gradient(circle at center,
+    rgba(255,90,0,0.25) 0%,
+    rgba(0,0,0,0.96) 70%);
+
+    z-index:99999;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-direction:column;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:scale(1.1);
+
+    transition:
+    opacity 1s ease,
+    transform 1.5s ease,
+    visibility 1s;
+
+    backdrop-filter:blur(0px);
+}
+
+#fireTransition.active{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:scale(1);
+
+    backdrop-filter:blur(10px);
+}
+
+.fire-ring{
+
+    width:220px;
+
+    height:220px;
+
+    border-radius:50%;
+
+    border:6px solid #ff4500;
+
+    box-shadow:
+        0 0 30px #ff4500,
+        0 0 80px #ff2200,
+        0 0 120px rgba(255,69,0,0.8),
+        inset 0 0 40px #ff4500;
+
+    animation:
+    fireSpin 2.5s linear infinite,
+    firePulse 1.2s ease-in-out infinite alternate;
+
+    position:relative;
+}
+.fire-ring::before{
+
+    content:'';
+
+    position:absolute;
+
+    inset:-20px;
+
+    border-radius:50%;
+
+    background:
+    conic-gradient(
+        from 0deg,
+        #ff4500,
+        #ff2200,
+        transparent,
+        #ff6600,
+        transparent,
+        #ff2200
+    );
+
+    filter:blur(20px);
+
+    opacity:0.8;
+
+    animation:fireSpinReverse 4s linear infinite;
+}
+
+.fire-text{
+
+    margin-top:3rem;
+
+    color:#fff;
+
+    font-family:'Bebas Neue';
+
+    font-size:4rem;
+
+    letter-spacing:4px;
+
+    text-transform:uppercase;
+
+    text-shadow:
+    0 0 20px #ff4500,
+    0 0 40px #ff2200,
+    0 0 80px rgba(255,69,0,0.8);
+
+    animation:firePulse 1s infinite alternate;
+}
+#fireTransition.active{
+
+    opacity:1;
+
+    pointer-events:all;
+
+    backdrop-filter:blur(8px);
+}
+
+@keyframes fireSpin{
+    from{ transform:rotate(0deg) scale(1); }
+    to{ transform:rotate(360deg) scale(1.08); }
+}
+
+@keyframes firePulse{
+    from{ filter:brightness(1); }
+    to{ filter:brightness(1.8); }
+}
+@keyframes fireSpinReverse{
+
+    from{
+        transform:rotate(360deg);
+    }
+
+    to{
+        transform:rotate(0deg);
+    }
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+
+        <div class="container-fluid navbar-wrapper">
+
+            <a class="navbar-brand" href="#">
+
+                <img src="/static/images/LOGO DOJO.png"
+                width="60">
+
+                <span>DOJO TEMPLE</span>
+
+            </a>
+
+            <ul class="navbar-nav align-items-center">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#inicio">Inicio</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#eventos">Eventos</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#galeria">Galería</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#planes">Planes</a>
+                </li>
+
+                <li class="nav-item ms-3">
+                    <a href="{% url 'login' %}" class="btn-auth fire-link">
+                        <i class="fas fa-fire"></i> Login
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'registro' %}" class="btn-auth register-btn fire-link">
+                        <i class="fas fa-skull"></i> Registro
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </nav>
+
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <div class="logo-circle" style="background: none; border: none; box-shadow: 0 0 80px rgba(255, 69, 0, 0.8), 0 0 120px rgba(255, 69, 0, 0.5);">
+                <img src="/static/images/LOGO DOJO.png" alt="Dojo Temple" style="width: 150%; height: 150%; object-fit: contain; filter: drop-shadow(0 0 20px #ff4500);">
+            </div>
+            <h1>Entra al Campo<br>de Batalla</h1>
+            <p>Forja tu espíritu de guerrero. Entrena con fuego en las venas y conquista tus límites. El campo de batalla te espera.</p>
+            <a href="#planes" class="btn-batalla"><i class="fas fa-fire"></i> ¡Únete Ahora!</a>
+            <div class="comunidad-temple">
+
+            <p class="comunidad-texto">
+
+                Inicia sesión o regístrate para formar parte de la
+                <span>Comunidad Temple</span>.
+
+                Mantente al tanto de próximos eventos,
+                comparte tus publicaciones marciales
+                y conecta en el chat privado con los guerreros del dojo.
+
+            </p>
+
+            <div class="comunidad-botones">
+
+                <a href="{% url 'login' %}" class="btn-comunidad fire-link">
+                    <i class="fas fa-fire"></i> Iniciar Sesión
+                </a>
+
+                <a href="{% url 'registro' %}" class="btn-comunidad fire-link">
+                    <i class="fas fa-skull"></i> Registrarse
+                </a>
+
+            </div>
+
+        </div>
+        </div>
+    </section>
+
+
+    <section class="eventos" id="eventos">
+        <div class="container">
+            <h2>Próximos Eventos</h2>
+            <div class="row g-4">
+                {% for evento in eventos %}
+
+                <div class="evento-card">
+
+                    {% if evento.imagen %}
+                    <img src="{{ evento.imagen.url }}"
+                    class="evento-img">
+                    {% endif %}
+
+                    <div class="evento-content">
+
+                        <h3>{{ evento.titulo }}</h3>
+
+                        <p class="evento-fecha">
+                            <i class="fas fa-calendar"></i>
+                            {{ evento.fecha }}
+                        </p>
+
+                        <p class="evento-lugar">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ evento.lugar }}
+                        </p>
+
+                        <p>
+                            {{ evento.descripcion }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+                
+            </div>
+        </div>
+    </section>
+
+    <section class="galeria" id="galeria">
+        <div class="container">
+            <h2>Galería de Fotos</h2>
+            <div class="galeria-grid">
+                {% for foto in galeria %}
+                <div class="galeria-item">
+                    <div class="galeria-placeholder"><i class="fas fa-image"></i></div>
+                    <div class="galeria-overlay">
+                        <div class="galeria-titulo">{{ foto.titulo }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="planes" id="planes">
+    <div class="container">
+        <h2>Nuestros Planes</h2>
+        <p style="text-align: center; color: #ccc; margin-bottom: 3rem; font-size: 1.1rem;">Elige tu plan y únete a nuestra comunidad en el foro</p>
+        <div class="row g-4 mt-3">
+            {% for plan in planes %}
+            <div class="col-md-6 col-lg-3">
+                    <div class="plan-card {% if plan.destacado %}destacado{% endif %}">
+                        {% if plan.destacado %}<div class="plan-badge">Más Popular</div>{% endif %}
+                        <div class="plan-nombre">{{ plan.nombre }}</div>
+                        <div class="plan-descripcion">{{ plan.descripcion }}</div>
+                        <div class="plan-precio">{{ plan.precio }}<span style="font-size: 1rem; color: #ccc;">/mes</span></div>
+                        <p style="color: #ff4500; font-weight: 700; margin: 1rem 0; text-align: center; font-size: 1.1rem;">{{ plan.frecuencia }}</p>
+                        <ul class="plan-beneficios">
+                            {% for beneficio in plan.beneficios %}
+                            <li>{{ beneficio }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            
+            <div style="text-align: center; margin-top: 4rem; padding: 3rem; background: rgba(255, 69, 0, 0.05); border: 2px solid rgba(255, 69, 0, 0.3); border-radius: 10px;">
+                <p style="color: #ccc; font-size: 1.1rem; margin-bottom: 1.5rem;">
+                    Para contratar cualquier plan, contactar con <span style="color: #ff4500; font-weight: 700;">Sensei Álvaro Utrobicic</span>
+                </p>
+                    <button class="btn-batalla" data-bs-toggle="modal" data-bs-target="#contactModal" style="font-size: 1rem; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 1rem; padding: 1rem 2rem;">
+                        <img src="/static/images/LOGO DOJO.png" alt="Dojo Temple" style="height: 40px; width: auto; filter: drop-shadow(0 0 10px #ff4500);">
+                        Comenzar Camino del Guerrero
+                    </button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Dojo Temple - Campo de Batalla. Forja tu espíritu de guerrero.</p>
+            <p><a href="#contactModal" data-bs-toggle="modal" data-bs-target="#contactModal">Contacto</a> <a href="/terminos/">Términos y Condiciones</a> <a href="#">Privacidad</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Modal de Contacto -->
+<div class="modal fade" id="contactModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: rgba(20, 10, 10, 0.95); border: 2px solid #ff4500;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(255, 69, 0, 0.3); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem;">
+                <img src="/static/images/LOGO DOJO.png" alt="Dojo Temple" style="height: 80px; width: auto; filter: drop-shadow(0 0 15px #ff4500);">
+                <h5 class="modal-title" style="color: #ff4500; font-family: 'Bebas Neue'; font-size: 1.8rem; letter-spacing: 1px; margin: 0;">
+                    Contacta con Sensei Álvaro
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" style="position: absolute; right: 1rem; top: 1rem;"></button>
+            </div>
+            <div class="modal-body" style="padding: 2rem;">
+                <p style="color: #ccc; text-align: center; margin-bottom: 2rem; font-size: 1.1rem;">
+                    Elige tu canal de contacto favorito
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <a href="https://wa.me/+56964559039" target="_blank" class="btn-contacto" style="background: linear-gradient(135deg, #000000, #9a1616); display: flex; align-items: center; justify-content: center; padding: 1rem; border-radius: 10px; color: #c6c6c6; text-decoration: none; font-weight: 700; font-size: 1.1rem; transition: all 0.3s ease;">
+                        <i class="fab fa-whatsapp" style="margin-right: 1rem; font-size: 1.5rem;"></i> WhatsApp
+                    </a>
+                    <a href="https://www.facebook.com/Dojo Temple Puerto Montt" target="_blank" class="btn-contacto" style="background: linear-gradient(135deg, #000000, #9a1616); display: flex; align-items: center; justify-content: center; padding: 1rem; border-radius: 10px; color: #c6c6c6; text-decoration: none; font-weight: 700; font-size: 1.1rem; transition: all 0.3s ease;">
+                        <i class="fab fa-facebook" style="margin-right: 1rem; font-size: 1.5rem;"></i> Facebook
+                    </a>
+                    <a href="https://www.instagram.com/dojotemple" target="_blank" class="btn-contacto" style="background: linear-gradient(135deg, #000000, #9a1616); display: flex; align-items: center; justify-content: center; padding: 1rem; border-radius: 10px; color: #c6c6c6; text-decoration: none; font-weight: 700; font-size: 1.1rem; transition: all 0.3s ease;">
+                        <i class="fab fa-instagram" style="margin-right: 1rem; font-size: 1.5rem;"></i> Instagram
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: 2px solid rgba(255, 69, 0, 0.3);">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background: #9a1616; border: 2px solid #000000; color: #fbfbfb;">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fireTransition">
+    <div class="fire-ring"></div>
+    <div class="fire-text">
+        <i class="fas fa-fire"></i>
+        Entrando al Dojo...
+    </div>
+</div>
+<script>
+window.addEventListener('pageshow', function () {
+    const overlay = document.getElementById('fireTransition');
+
+    if (overlay) {
+        overlay.classList.remove('active');
+        overlay.style.opacity = '0';
+        overlay.style.visibility = 'hidden';
+        overlay.style.pointerEvents = 'none';
+    }
+});
+</script>
+<script>
+document.querySelectorAll('.fire-link').forEach(link => {
+    link.addEventListener('click', function(e){
+        e.preventDefault();
+
+        const destino = this.href;
+        const overlay = document.getElementById('fireTransition');
+
+        if (overlay) {
+            overlay.classList.add('active');
+        }
+
+        setTimeout(() => {
+            window.location.href = destino;
+        }, 1500);
+    });
+});
+
+window.addEventListener('pageshow', function () {
+    const overlay = document.getElementById('fireTransition');
+
+    if (overlay) {
+        overlay.classList.remove('active');
+        overlay.style.opacity = '';
+        overlay.style.visibility = '';
+        overlay.style.pointerEvents = '';
+    }
+});
+</script>
+</body>
+</html>
