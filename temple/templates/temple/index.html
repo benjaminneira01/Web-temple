@@ -556,6 +556,69 @@ footer p:last-child{
     border:2px solid rgba(255,69,0,.4);
     box-shadow:0 0 25px rgba(255,69,0,.25);
 }
+.evento-card{
+    background: rgba(255, 69, 0, 0.05);
+    border: 2px solid rgba(255, 69, 0, 0.3);
+    border-radius: 14px;
+    overflow: hidden;
+
+    display:flex;
+    flex-direction:column;
+
+    height:100%;
+    min-height:520px;
+
+    transition:.3s ease;
+
+    box-shadow:0 0 25px rgba(255,69,0,.15);
+}
+
+.evento-card:hover{
+    transform:translateY(-8px);
+    border-color:#ff4500;
+    box-shadow:0 0 35px rgba(255,69,0,.35);
+}
+
+.evento-img{
+    width:100%;
+
+    height:260px;
+
+    object-fit:cover;
+
+    object-position:center;
+
+    display:block;
+
+    border-bottom:2px solid rgba(255,69,0,.25);
+}
+
+.evento-content{
+    padding:1.5rem;
+
+    display:flex;
+    flex-direction:column;
+
+    flex:1;
+}
+
+.evento-content h3{
+    color:#ff4500;
+    margin-bottom:1rem;
+}
+
+.evento-content p{
+    color:#ccc;
+}
+
+.evento-content .evento-fecha,
+.evento-content .evento-lugar{
+    margin-bottom:.6rem;
+}
+
+.evento-content .evento-lugar{
+    margin-bottom:1.2rem;
+}
 
     </style>
 </head>
@@ -658,7 +721,8 @@ footer p:last-child{
             <div class="row g-4">
                 {% for evento in eventos %}
 
-                <div class="evento-card">
+                <div class="col-lg-6">
+                    <div class="evento-card">
 
                     {% if evento.imagen %}
                         <img src="{{ evento.imagen.url }}" class="evento-img" alt="{{ evento.titulo }}">
@@ -681,7 +745,8 @@ footer p:last-child{
                     </div>
 
                 </div>
-
+                    </div>
+                </div>    
                 {% endfor %}
                 
             </div>
