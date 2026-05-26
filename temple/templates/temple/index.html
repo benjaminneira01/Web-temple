@@ -17,9 +17,9 @@
         .navbar-brand i { font-size: 2rem; text-shadow: 0 0 20px #ff4500; margin-right: 10px; }
         .nav-link { color: #ccc !important; font-weight: 600; transition: all 0.3s ease; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
         .nav-link:hover { color: #ff4500 !important; text-shadow: 0 0 10px #ff4500; }
-       .hero { min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: url("{% static 'images/fondo-pagina.png' %}") center/cover no-repeat; padding: 2rem; }
+       .hero { min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: url("{% static 'images/fondo-pagina.png' %}") center/cover no-repeat; padding: 9rem 2rem 2rem; }
         @keyframes fire-flicker { 0%, 100% { text-shadow: 0 0 20px #ff4500, 0 0 40px #ff2200, 0 0 60px #ff0000; } 50% { text-shadow: 0 0 30px #ff6a1a, 0 0 50px #ff4500, 0 0 80px #ff2200; } }
-        .hero::before { padding-top: 6rem;content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(255, 69, 0, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 0, 0, 0.2) 0%, transparent 50%); animation: fire-flicker 3s infinite; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(255, 69, 0, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 0, 0, 0.2) 0%, transparent 50%); animation: fire-flicker 3s infinite; }
         .hero-content {position: relative;z-index: 1;text-align: center;max-width: 900px;}
         .logo-circle { width: 150px; height: 150px; margin: 0 auto 2rem; border: 4px solid #ff4500; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; box-shadow: 0 0 40px rgba(255, 69, 0, 0.8); animation: fire-flicker 3s infinite; }
         .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; color: #fff; text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 0 30px #ff4500, 0 0 60px #ff2200; animation: fire-flicker 2.5s infinite; }
@@ -423,56 +423,148 @@
         transform:rotate(0deg);
     }
 }
+@media (max-width: 768px){
+
+    nav{
+        position: relative !important;
+        padding: .7rem 0 !important;
+    }
+
+    .navbar-wrapper{
+        padding: .5rem 1rem !important;
+        flex-direction: column;
+        align-items: center;
+        gap: .8rem;
+    }
+
+    .navbar-brand{
+        margin: 0 !important;
+        justify-content: center;
+    }
+
+    .navbar-brand img{
+        width: 45px !important;
+    }
+
+    .navbar-brand span{
+        font-size: 1.8rem;
+    }
+
+    .navbar-nav{
+        width: 100%;
+        margin: 0 !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .6rem;
+        text-align: center;
+    }
+
+    .nav-item{
+        width: 100%;
+    }
+
+    .nav-link,
+    .btn-auth{
+        width: 100%;
+        justify-content: center;
+        font-size: .8rem;
+        padding: .6rem .5rem;
+    }
+
+    .hero{
+        min-height: auto;
+        padding-top:12rem;
+        background-position: center;
+    }
+
+    .logo-circle{
+        width: 100px;
+        height: 100px;
+        margin-bottom: 1rem;
+    }
+
+    .hero h1{
+        font-size: 3rem;
+        line-height: 1;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero p{
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    .btn-batalla{
+        padding: .9rem 1.5rem;
+        font-size: .9rem;
+    }
+
+    .comunidad-texto{
+        font-size: .95rem;
+    }
+
+    .comunidad-botones{
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-
         <div class="container-fluid navbar-wrapper">
 
-            <a class="navbar-brand" href="#">
-
-                <img src="{% static 'images/logo-dojo.png' %}"
-                width="60">
-
+            <a class="navbar-brand" href="#inicio">
+                <img src="{% static 'images/logo-dojo.png' %}" width="55">
                 <span>DOJO TEMPLE</span>
-
             </a>
 
-            <ul class="navbar-nav align-items-center">
+            <button class="navbar-toggler dojo-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#dojoNavbar"
+                    aria-controls="dojoNavbar"
+                    aria-expanded="false"
+                    aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#inicio">Inicio</a>
-                </li>
+            <div class="collapse navbar-collapse" id="dojoNavbar">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#eventos">Eventos</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#inicio">Inicio</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#galeria">Galería</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#eventos">Eventos</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#planes">Planes</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#galeria">Galería</a>
+                    </li>
 
-                <li class="nav-item ms-3">
-                    <a href="{% url 'login' %}" class="btn-auth fire-link">
-                        <i class="fas fa-fire"></i> Login
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#planes">Planes</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="{% url 'registro' %}" class="btn-auth register-btn fire-link">
-                        <i class="fas fa-skull"></i> Registro
-                    </a>
-                </li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="{% url 'login' %}" class="btn-auth fire-link">
+                            <i class="fas fa-fire"></i> Login
+                        </a>
+                    </li>
 
-            </ul>
+                    <li class="nav-item">
+                        <a href="{% url 'registro' %}" class="btn-auth register-btn fire-link">
+                            <i class="fas fa-skull"></i> Registro
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
 
         </div>
-
     </nav>
 
     <section class="hero" id="inicio">
