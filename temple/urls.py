@@ -10,5 +10,6 @@ urlpatterns = [
     path('comunidad/', views.comunidad, name='comunidad'),
     path('terminos/', views.terminos, name='terminos'),
     path('publicacion/eliminar/<int:publicacion_id>/', views.eliminar_publicacion, name='eliminar_publicacion'),
-    path('publicacion/galeria/<int:publicacion_id>/',views.toggle_galeria,name='toggle_galeria'),
+    path('toggle-galeria/<int:publicacion_id>/', views.toggle_galeria, name='toggle_galeria'),
+
 ]

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/galeria.css' %}">
 </head>
 <style>.hero { min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: url("{% static 'images/fondo-pagina.png' %}") center/cover no-repeat; padding: 9rem 2rem 2rem; }</style>
 <body>
@@ -146,15 +147,34 @@
     <section class="galeria" id="galeria">
         <div class="container">
             <h2>Galería de Fotos</h2>
+
             <div class="galeria-grid">
-                {% for foto in galeria %}
+
+                {% for foto in fotos_galeria %}
                 <div class="galeria-item">
-                    <div class="galeria-placeholder"><i class="fas fa-image"></i></div>
+
+                    {% if foto.imagen %}
+                    <img src="{{ foto.imagen.url }}"
+                        class="galeria-img"
+                        alt="{{ foto.titulo }}">
+                    {% endif %}
+
                     <div class="galeria-overlay">
-                        <div class="galeria-titulo">{{ foto.titulo }}</div>
+                        <div class="galeria-titulo">
+                            <strong>{{ foto.titulo }}</strong><br>
+                            <small>@{{ foto.autor.username }}</small>
+                        </div>
                     </div>
+
                 </div>
+                {% empty %}
+
+                <p style="color:#777; text-align:center; width:100%;">
+                    Aún no hay fotos publicadas en la galería principal.
+                </p>
+
                 {% endfor %}
+
             </div>
         </div>
     </section>

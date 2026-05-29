@@ -5,10 +5,31 @@ from django.contrib.auth.views import LoginView, LogoutView
 from .forms import RegistroForm, PerfilForm, HistoriaDojoForm
 from .models import Perfil, HistoriaDojo,Evento
 
+import json
+from django.http import JsonResponse
 
+@login_required
+def toggle_galeria(request, publicacion_id):
+    publicacion = HistoriaDojo.objects.get(
+        id=publicacion_id,
+        autor=request.user
+    )
+
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        publicacion.mostrar_galeria = data.get('mostrar_galeria', False)
+        publicacion.save()
+
+        return JsonResponse({'ok': True})
+
+    return JsonResponse({'ok': False}, status=400)
 
 def index(request):
     eventos = Evento.objects.filter(activo=True)
+
+    fotos_galeria = HistoriaDojo.objects.filter(
+    mostrar_galeria=True
+    ).select_related('autor').order_by('-fecha_creacion')[:6]
 
     
     planes = [
@@ -69,16 +90,8 @@ def index(request):
         },
     ]
     
-    galeria = [
-        {'titulo': 'Entrenamiento Matutino'},
-        {'titulo': 'Torneo 2024'},
-        {'titulo': 'Ceremonia de Poder'},
-        {'titulo': 'Maestros del Dojo'},
-        {'titulo': 'Iniciación de Guerreros'},
-        {'titulo': 'Arena de Fuego'},
-    ]
     
-    return render(request, 'temple/index.html', {'eventos': eventos, 'planes': planes, 'galeria': galeria})
+    return render(request, 'temple/index.html', {'eventos': eventos, 'planes': planes,'fotos_galeria': fotos_galeria,})
 
 
 def terminos(request):
