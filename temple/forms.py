@@ -7,6 +7,7 @@ from .models import Perfil, HistoriaDojo
 class RegistroForm(UserCreationForm):
     email = forms.EmailField(required=True)
     apodo = forms.CharField(required=False)
+
     color_cinturon = forms.ChoiceField(
         required=False,
         choices=[
@@ -20,6 +21,7 @@ class RegistroForm(UserCreationForm):
             ('Negro', 'Negro'),
         ]
     )
+
     dan = forms.ChoiceField(
         required=False,
         choices=[
@@ -45,16 +47,21 @@ class RegistroForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        for field in ['username', 'email', 'password1', 'password2', 'apodo', 'color_cinturon', 'dan']:
+        for field in [
+            'username',
+            'email',
+            'password1',
+            'password2',
+            'apodo',
+            'color_cinturon',
+            'dan'
+        ]:
             self.fields[field].widget.attrs.update({
                 'class': 'form-control dojo-input'
             })
 
 
 class PerfilForm(forms.ModelForm):
-    class Meta:
-        model = Perfil
-        fields = ['foto_perfil', 'biografia', 'rango']
     eliminar_foto = forms.BooleanField(required=False)
 
     class Meta:
@@ -77,13 +84,12 @@ class PerfilForm(forms.ModelForm):
             'class': 'form-control dojo-input',
             'placeholder': 'Ej: Alumno, Competidor, Sensei...'
         })
-    
 
 
 class HistoriaDojoForm(forms.ModelForm):
     class Meta:
         model = HistoriaDojo
-        fields = ['titulo', 'descripcion', 'imagen', 'mostrar_galeria']
+        fields = ['titulo', 'descripcion', 'imagen']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

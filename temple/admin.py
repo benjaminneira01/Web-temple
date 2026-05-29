@@ -9,6 +9,17 @@ class PerfilAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'rango')
 
 
+@admin.action(description="Aprobar cinturón solicitado")
+def aprobar_cinturon(modeladmin, request, queryset):
+    for perfil in queryset:
+        if perfil.color_cinturon_pendiente:
+            perfil.color_cinturon = perfil.color_cinturon_pendiente
+            perfil.dan = perfil.dan_pendiente
+            perfil.color_cinturon_pendiente = ''
+            perfil.dan_pendiente = ''
+            perfil.aprobado_por_admin = True
+            perfil.save()
+
 @admin.register(HistoriaDojo)
 class HistoriaDojoAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'autor', 'fecha_creacion')

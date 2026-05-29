@@ -50,6 +50,30 @@
                         <a class="nav-link" href="#planes">Planes</a>
                     </li>
 
+                    {% if user.is_authenticated %}
+
+                    <li class="nav-item ms-lg-3">
+                        <a href="{% url 'perfil' %}" class="btn-auth">
+                            <i class="fas fa-user"></i>
+                            {{ user.username }}
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <form method="POST"
+                            action="{% url 'logout' %}"
+                            style="display:inline;">
+                            {% csrf_token %}
+
+                            <button type="submit" class="btn-auth">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Salir
+                            </button>
+                        </form>
+                    </li>
+
+                    {% else %}
+
                     <li class="nav-item ms-lg-3">
                         <a href="{% url 'login' %}" class="btn-auth fire-link">
                             <i class="fas fa-fire"></i> Login
@@ -61,6 +85,8 @@
                             <i class="fas fa-skull"></i> Registro
                         </a>
                     </li>
+
+                    {% endif %}
 
                 </ul>
             </div>
@@ -110,38 +136,46 @@
         <div class="container">
             <h2>Próximos Eventos</h2>
             <div class="row g-4">
-                {% for evento in eventos %}
+        {% for evento in eventos %}
 
-                <div class="col-lg-6">
-                    <div class="evento-card">
+        <div class="col-md-6 col-lg-4">
+            <div class="evento-card"
+                data-bs-toggle="modal"
+                data-bs-target="#eventoModal{{ evento.id }}">
 
+                <div class="evento-img-box">
                     {% if evento.imagen %}
                         <img src="{{ evento.imagen.url }}" class="evento-img" alt="{{ evento.titulo }}">
+                    {% else %}
+                        <img src="{% static 'images/logo-dojo.png' %}" class="evento-img evento-img-placeholder" alt="Dojo Temple">
                     {% endif %}
-
-                    <div class="evento-content">
-                        <h3>{{ evento.titulo }}</h3>
-
-                        <p class="evento-fecha">
-                            <i class="fas fa-calendar"></i>
-                            {{ evento.fecha }}
-                        </p>
-
-                        <p class="evento-lugar">
-                            <i class="fas fa-map-marker-alt"></i>
-                            {{ evento.lugar }}
-                        </p>
-
-                        <p>{{ evento.descripcion }}</p>
-                    </div>
-
                 </div>
-                    </div>
-                </div>    
-                {% endfor %}
-                
+
+                <div class="evento-content">
+                    <h3>{{ evento.titulo }}</h3>
+
+                    <p class="evento-fecha">
+                        <i class="fas fa-calendar"></i>
+                        {{ evento.fecha }}
+                    </p>
+
+                    <p class="evento-lugar">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ evento.lugar }}
+                    </p>
+
+                    <p class="evento-desc">
+                        {{ evento.descripcion|truncatechars:110 }}
+                    </p>
+
+                    <span class="evento-ver">
+                        Ver evento <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
             </div>
         </div>
+
+        {% endfor %}
     </section>
 
     <section class="galeria" id="galeria">

@@ -21,6 +21,16 @@ class Perfil(models.Model):
         ]
     )
 
+    color_cinturon_pendiente = models.CharField(
+    max_length=20,
+    blank=True
+    )
+    dan_pendiente = models.CharField(max_length=20, blank=True)
+    aprobado_por_admin = models.BooleanField(
+        default=False
+    )
+    
+
     foto_perfil = models.ImageField(upload_to='perfiles/', blank=True, null=True)
     biografia = models.TextField(blank=True)
     rango = models.CharField(max_length=100, blank=True)
@@ -28,6 +38,15 @@ class Perfil(models.Model):
     def __str__(self):
         return self.user.username
     
+    def save(self, *args, **kwargs):
+        if self.aprobado_por_admin and self.color_cinturon_pendiente:
+            self.color_cinturon = self.color_cinturon_pendiente
+            self.dan = self.dan_pendiente
+            self.color_cinturon_pendiente = ''
+            self.dan_pendiente = ''
+
+        super().save(*args, **kwargs)
+        
     dan = models.CharField(
     max_length=20,
     blank=True,

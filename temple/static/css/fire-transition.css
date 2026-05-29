@@ -1,0 +1,78 @@
+#fireTransition{
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at center, rgba(255,90,0,.25) 0%, rgba(0,0,0,.96) 70%);
+    z-index:99999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    opacity:0;
+    visibility:hidden;
+    transform:scale(1.1);
+    transition:opacity 1s ease, transform 1.5s ease, visibility 1s;
+    backdrop-filter:blur(0);
+}
+
+#fireTransition.active{
+    opacity:1;
+    visibility:visible;
+    transform:scale(1);
+    pointer-events:all;
+    backdrop-filter:blur(8px);
+}
+
+.fire-ring{
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    border:6px solid #ff4500;
+    box-shadow:
+    0 0 30px #ff4500,
+    0 0 80px #ff2200,
+    0 0 120px rgba(255,69,0,.8),
+    inset 0 0 40px #ff4500;
+    animation:fireSpin 2.5s linear infinite, firePulse 1.2s ease-in-out infinite alternate;
+    position:relative;
+}
+
+.fire-ring::before{
+    content:'';
+    position:absolute;
+    inset:-20px;
+    border-radius:50%;
+    background:conic-gradient(from 0deg,#ff4500,#ff2200,transparent,#ff6600,transparent,#ff2200);
+    filter:blur(20px);
+    opacity:.8;
+    animation:fireSpinReverse 4s linear infinite;
+}
+
+.fire-text{
+    margin-top:3rem;
+    color:white;
+    font-family:'Bebas Neue';
+    font-size:4rem;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    text-shadow:
+    0 0 20px #ff4500,
+    0 0 40px #ff2200,
+    0 0 80px rgba(255,69,0,.8);
+    animation:firePulse 1s infinite alternate;
+}
+
+@keyframes fireSpin{
+    from{transform:rotate(0deg) scale(1);}
+    to{transform:rotate(360deg) scale(1.08);}
+}
+
+@keyframes firePulse{
+    from{filter:brightness(1);}
+    to{filter:brightness(1.8);}
+}
+
+@keyframes fireSpinReverse{
+    from{transform:rotate(360deg);}
+    to{transform:rotate(0deg);}
+}

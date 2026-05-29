@@ -8,21 +8,6 @@ from .models import Perfil, HistoriaDojo,Evento
 import json
 from django.http import JsonResponse
 
-@login_required
-def toggle_galeria(request, publicacion_id):
-    publicacion = HistoriaDojo.objects.get(
-        id=publicacion_id,
-        autor=request.user
-    )
-
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        publicacion.mostrar_galeria = data.get('mostrar_galeria', False)
-        publicacion.save()
-
-        return JsonResponse({'ok': True})
-
-    return JsonResponse({'ok': False}, status=400)
 
 def index(request):
     eventos = Evento.objects.filter(activo=True)
@@ -109,8 +94,9 @@ def registro(request):
             user=user,
             defaults={
                 'apodo': form.cleaned_data.get('apodo', ''),
-                'color_cinturon': form.cleaned_data.get('color_cinturon', ''),
-                'dan': form.cleaned_data.get('dan', ''),
+                'color_cinturon_pendiente': form.cleaned_data.get('color_cinturon', ''),
+                'dan_pendiente': form.cleaned_data.get('dan', ''),
+                'aprobado_por_admin': False,
             }
         )
             login(request, user)
