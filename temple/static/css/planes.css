@@ -1,0 +1,73 @@
+.planes{
+    background:rgba(20,10,10,.5);
+}
+
+.plan-card{
+    background:rgba(255,69,0,.05);
+    border:2px solid rgba(255,69,0,.3);
+    border-radius:10px;
+    padding:2rem;
+    transition:.3s ease;
+    position:relative;
+    padding-bottom:1.5rem;
+}
+
+.plan-card.destacado{
+    border-color:#ff4500;
+    background:rgba(255,69,0,.15);
+    transform:scale(1.05);
+    box-shadow:0 0 40px rgba(255,69,0,.5);
+}
+
+.plan-card:hover{
+    border-color:#ff4500;
+    background:rgba(255,69,0,.1);
+    box-shadow:0 0 30px rgba(255,69,0,.4);
+    transform:translateY(-10px);
+}
+
+.plan-badge{
+    position:absolute;
+    top:-15px;
+    left:50%;
+    transform:translateX(-50%);
+    background:linear-gradient(135deg,#ff4500,#ff2200);
+    color:white;
+    padding:.5rem 1rem;
+    border-radius:50px;
+    font-weight:700;
+    font-size:.9rem;
+    text-transform:uppercase;
+}
+
+.plan-nombre{
+    color:#ff4500;
+    font-size:1.8rem;
+    font-weight:700;
+    margin-bottom:.5rem;
+    margin-top:1rem;
+}
+
+.plan-precio{
+    font-size:2.5rem;
+    color:white;
+    font-weight:900;
+    margin-bottom:1rem;
+}
+
+.plan-descripcion{
+    color:#999;
+    margin-bottom:1.5rem;
+    font-size:.9rem;
+}
+
+.plan-beneficios{
+    list-style:none;
+    margin-bottom:2rem;
+}
+
+.plan-beneficios li{
+    color:#ccc;
+    padding:.5rem 0;
+    border-bottom:1px solid rgba(255,69,0,.2);
+}

@@ -1,0 +1,50 @@
+:root{
+    --primary:#ff4500;
+    --primary-dark:#ff2200;
+    --bg:#050505;
+    --card:#140606;
+    --text:#ffffff;
+    --muted:#cccccc;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Roboto', sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+}
+
+section{
+    padding:5rem 0;
+    border-top:3px solid var(--primary);
+}
+
+section h2{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:3rem;
+    color:var(--primary);
+    margin-bottom:3rem;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    text-shadow:0 0 20px var(--primary);
+    text-align:center;
+}
+
+@keyframes fire-flicker{
+    0%,100%{
+        text-shadow:0 0 20px #ff4500, 0 0 40px #ff2200, 0 0 60px #ff0000;
+    }
+    50%{
+        text-shadow:0 0 30px #ff6a1a, 0 0 50px #ff4500, 0 0 80px #ff2200;
+    }
+}

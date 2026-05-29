@@ -1,0 +1,124 @@
+nav{
+    background:rgba(20,10,10,.95) !important;
+    border-bottom:3px solid #ff4500;
+    padding:1rem 0;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.navbar-wrapper{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-left:4rem;
+    padding-right:4rem;
+}
+
+.navbar-brand{
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    margin-right:auto;
+    font-family:'Bebas Neue', sans-serif;
+    font-size:1.8rem;
+    color:#ff4500 !important;
+    font-weight:bold;
+    text-transform:uppercase;
+    letter-spacing:2px;
+}
+
+.nav-link{
+    color:#ccc !important;
+    font-weight:600;
+    transition:.3s ease;
+    text-transform:uppercase;
+    font-size:.9rem;
+    letter-spacing:1px;
+}
+
+.nav-link:hover{
+    color:#ff4500 !important;
+    text-shadow:0 0 10px #ff4500;
+}
+
+.navbar-nav{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:1rem;
+}
+
+.btn-auth{
+    padding:.7rem 1.4rem;
+    border:2px solid #ff4500;
+    border-radius:8px;
+    color:white !important;
+    text-decoration:none !important;
+    font-weight:700;
+    text-transform:uppercase;
+    background:rgba(255,69,0,.08);
+    transition:.3s ease;
+    box-shadow:0 0 10px rgba(255,69,0,.25);
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+}
+
+.btn-auth i{
+    color:#ff4500;
+}
+
+.btn-auth:hover{
+    background:#471300;
+    transform:translateY(-2px);
+    box-shadow:0 0 20px rgba(255,69,0,.8);
+}
+
+.btn-auth:hover i{
+    color:white;
+}
+
+.dojo-toggler{
+    border:2px solid #ff4500;
+    box-shadow:0 0 15px rgba(255,69,0,.5);
+}
+
+.dojo-toggler:focus{
+    box-shadow:0 0 20px rgba(255,69,0,.8);
+}
+
+@media(max-width:991px){
+    .navbar-wrapper{
+        padding-left:1rem;
+        padding-right:1rem;
+    }
+
+    .navbar-brand img{
+        width:45px;
+    }
+
+    .navbar-brand span{
+        font-size:1.7rem;
+    }
+
+    .navbar-collapse{
+        margin-top:1rem;
+        padding:1.2rem;
+        background:rgba(10,5,5,.98);
+        border:2px solid rgba(255,69,0,.45);
+        border-radius:14px;
+        box-shadow:0 0 30px rgba(255,69,0,.25);
+    }
+
+    .navbar-nav{
+        gap:.8rem;
+        text-align:center;
+    }
+
+    .btn-auth{
+        width:100%;
+        justify-content:center;
+    }
+}

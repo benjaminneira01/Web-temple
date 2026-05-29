@@ -1,0 +1,606 @@
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            background:#0a0a0a;
+            color:white;
+            font-family:'Roboto', sans-serif;
+        }
+
+        nav{
+            background:rgba(20,10,10,0.95);
+            border-bottom:3px solid #ff4500;
+            padding:1rem 0;
+        }
+
+        .navbar-brand{
+            color:#ff4500 !important;
+            font-family:'Bebas Neue';
+            font-size:2rem;
+            letter-spacing:2px;
+        }
+
+        .perfil-header{
+
+            padding:4rem 2rem;
+
+            background:
+            linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)),
+            url('/static/images/FONDO PAGINA.png');
+
+            background-size:cover;
+            background-position:center;
+
+            text-align:center;
+
+            border-bottom:3px solid #ff4500;
+        }
+
+        .perfil-foto{
+
+            width:180px;
+            height:180px;
+
+            border-radius:50%;
+
+            object-fit:cover;
+
+            border:4px solid #ff4500;
+
+            box-shadow:
+            0 0 20px rgba(255,69,0,0.8),
+            0 0 50px rgba(255,69,0,0.4);
+
+            margin-bottom:2rem;
+        }
+
+        .titulo{
+
+            font-family:'Bebas Neue';
+
+            font-size:4rem;
+
+            color:#ff4500;
+
+            letter-spacing:3px;
+
+            text-shadow:
+            0 0 10px #ff4500,
+            0 0 30px #ff2200;
+        }
+
+        .subtitulo{
+
+            color:#ccc;
+
+            font-size:1.2rem;
+
+            margin-top:1rem;
+        }
+
+        .contenido{
+
+            max-width:1200px;
+
+            margin:auto;
+
+            padding:3rem 1rem;
+        }
+
+        .dojo-card{
+
+            background:rgba(255,69,0,0.05);
+
+            border:2px solid rgba(255,69,0,0.25);
+
+            border-radius:20px;
+
+            padding:2rem;
+
+            margin-bottom:3rem;
+
+            box-shadow:
+            0 0 20px rgba(255,69,0,0.15);
+        }
+
+        .card-title{
+
+            color:#ff4500;
+
+            font-family:'Bebas Neue';
+
+            font-size:2rem;
+
+            margin-bottom:2rem;
+
+            letter-spacing:2px;
+        }
+
+        .dojo-input{
+
+            background:#050505 !important;
+
+            border:2px solid rgba(180,180,180,0.25) !important;
+
+            color:#f5f5f5 !important;
+
+            padding:1rem;
+
+            border-radius:10px;
+
+            margin-bottom:1rem;
+        }
+
+        .dojo-input:focus{
+
+            background:#0a0a0a !important;
+
+            color:white !important;
+
+            border-color:#bfbfbf !important;
+
+            box-shadow:
+            0 0 10px rgba(220,220,220,0.35),
+            0 0 20px rgba(180,180,180,0.2);
+        }
+
+        textarea{
+            min-height:120px;
+        }
+
+        .btn-dojo{
+
+            background:
+            linear-gradient(135deg,#ff4500,#ff2200);
+
+            border:none;
+
+            padding:1rem 2rem;
+
+            border-radius:10px;
+
+            color:white;
+
+            font-weight:700;
+
+            text-transform:uppercase;
+
+            letter-spacing:2px;
+
+            transition:0.3s;
+        }
+
+        .btn-dojo:hover{
+
+            transform:translateY(-3px);
+
+            box-shadow:
+            0 0 20px rgba(255,69,0,0.7);
+        }
+
+        .historia-card{
+
+            background:rgba(255,69,0,0.05);
+
+            border:2px solid rgba(255,69,0,0.2);
+
+            border-radius:15px;
+
+            overflow:hidden;
+
+            transition:0.3s;
+        }
+
+        .historia-card:hover{
+
+            transform:translateY(-5px);
+
+            border-color:#ff4500;
+
+            box-shadow:
+            0 0 20px rgba(255,69,0,0.3);
+        }
+
+        .historia-img{
+
+            width:100%;
+            height:250px;
+
+            object-fit:cover;
+        }
+
+        .historia-content{
+            padding:1.5rem;
+        }
+
+        .historia-title{
+
+            color:#ff4500;
+
+            font-size:1.5rem;
+
+            margin-bottom:1rem;
+        }
+
+        .logout-btn{
+
+            border:2px solid #ff4500;
+
+            color:white;
+
+            text-decoration:none;
+
+            padding:0.7rem 1.3rem;
+
+            border-radius:10px;
+
+            transition:0.3s;
+        }
+
+        .logout-btn:hover{
+
+            background:#ff4500;
+
+            color:white;
+        }
+        .marcial-info{
+            display:flex;
+            justify-content:center;
+            gap:1rem;
+            flex-wrap:wrap;
+            margin:1rem 0 1.5rem;
+        }
+
+        .marcial-info span{
+            border:2px solid rgba(255,69,0,0.35);
+            background:rgba(255,69,0,0.08);
+            color:#fff;
+            padding:0.7rem 1.2rem;
+            border-radius:999px;
+            font-weight:700;
+            box-shadow:0 0 18px rgba(255,69,0,0.2);
+        }
+
+        .marcial-info i{
+            color:#ff4500;
+            margin-right:0.4rem;
+        }
+        .perfil-avatar-wrap{
+            position:relative;
+            width:190px;
+            height:190px;
+            margin:0 auto 2rem;
+        }
+
+        .perfil-foto{
+            width:190px;
+            height:190px;
+        }
+
+        .form-label{
+            color:#ff4500;
+            font-weight:700;
+            margin-bottom:.5rem;
+        }
+        .perfil-edit-card{
+            background:
+            linear-gradient(145deg, rgba(255,69,0,.08), rgba(10,10,10,.98));
+        }
+
+        .foto-upload-zone{
+            display:flex;
+            align-items:center;
+            gap:2rem;
+            padding:2rem;
+            border:2px dashed rgba(255,69,0,.35);
+            border-radius:18px;
+            background:rgba(0,0,0,.35);
+            margin-bottom:2rem;
+        }
+
+        .foto-preview img{
+            width:140px;
+            height:140px;
+            border-radius:50%;
+            object-fit:cover;
+            border:3px solid #ff4500;
+            box-shadow:0 0 30px rgba(255,69,0,.55);
+        }
+
+        .foto-actions{
+            display:flex;
+            flex-direction:column;
+            gap:1rem;
+            flex:1;
+        }
+
+        #id_foto_perfil{
+            display:none;
+        }
+
+        .upload-label{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:.7rem;
+            padding:1rem 1.5rem;
+            border:2px solid #ff4500;
+            border-radius:12px;
+            color:white;
+            background:rgba(255,69,0,.08);
+            cursor:pointer;
+            font-weight:700;
+            text-transform:uppercase;
+            transition:.3s;
+        }
+
+        .upload-label:hover{
+            background:#ff4500;
+            box-shadow:0 0 25px rgba(255,69,0,.7);
+        }
+
+        .delete-photo-check{
+            display:inline-flex;
+            align-items:center;
+            gap:.7rem;
+            color:#ffb3b3;
+            cursor:pointer;
+            font-weight:700;
+        }
+
+        .delete-photo-check input{
+            accent-color:#ff4500;
+            width:18px;
+            height:18px;
+        }
+
+        @media(max-width:768px){
+            .foto-upload-zone{
+                flex-direction:column;
+                text-align:center;
+            }
+        }
+        .btn-delete-post{
+            margin-top:1rem;
+            width:100%;
+            padding:.8rem;
+            border:2px solid #ff2b2b;
+            background:rgba(247, 4, 4, 0.08);
+            color:#ffb3b3;
+            border-radius:10px;
+            font-weight:700;
+            text-transform:uppercase;
+            transition:.3s;
+        }
+
+        .btn-delete-post:hover{
+            background:#ff2b2b;
+            color:white;
+            box-shadow:0 0 20px rgba(255,0,0,.5);
+        }
+        .post-upload-zone{
+            border:2px dashed rgba(255,69,0,.4);
+            background:rgba(0,0,0,.35);
+            border-radius:18px;
+            padding:2rem;
+            margin-bottom:1.5rem;
+            text-align:center;
+            transition:.3s;
+        }
+
+        .post-upload-zone:hover{
+            border-color:#ff4500;
+            box-shadow:0 0 25px rgba(255,69,0,.25);
+        }
+
+        .post-file-input{
+            display:none;
+        }
+
+        .post-upload-label{
+            cursor:pointer;
+            color:white;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:.7rem;
+        }
+
+        .post-upload-label i{
+            font-size:3rem;
+            color:#ff4500;
+            text-shadow:0 0 20px rgba(255,69,0,.8);
+        }
+
+        .post-upload-label span{
+            font-weight:800;
+            text-transform:uppercase;
+            letter-spacing:1px;
+        }
+
+        .post-upload-label small{
+            color:#999;
+        }
+
+        .post-image-preview{
+            margin-top:1.5rem;
+        }
+
+        .post-image-preview img{
+            max-width:100%;
+            max-height:320px;
+            object-fit:cover;
+            border-radius:16px;
+            border:2px solid #ff4500;
+            box-shadow:0 0 30px rgba(255,69,0,.35);
+        }
+.publicacion-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:1.5rem;
+
+    border-top:1px solid rgba(255,69,0,.2);
+
+    background:#090404;
+}
+
+.galeria-control{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.galeria-text{
+    color:#ddd;
+    font-weight:600;
+}
+
+.switch{
+    position:relative;
+    display:inline-block;
+    width:60px;
+    height:32px;
+}
+
+.switch input{
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.slider{
+    position:absolute;
+    cursor:pointer;
+    inset:0;
+
+    background:#333;
+
+    border-radius:50px;
+
+    transition:.3s;
+}
+
+.slider:before{
+    content:"";
+
+    position:absolute;
+
+    width:24px;
+    height:24px;
+
+    left:4px;
+    top:4px;
+
+    border-radius:50%;
+
+    background:white;
+
+    transition:.3s;
+}
+
+.switch input:checked + .slider{
+    background:#ff4500;
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(28px);
+}
+
+.btn-delete-post{
+    border:none;
+
+    padding:.9rem 1.4rem;
+
+    border-radius:10px;
+
+    background:#4a0808;
+
+    color:white;
+
+    font-weight:700;
+
+    transition:.3s;
+}
+
+.btn-delete-post:hover{
+    background:#d41515;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 0 20px rgba(255,0,0,.4);
+}
+@media(max-width:768px){
+
+    .publicacion-footer{
+        flex-direction:column;
+        gap:1rem;
+    }
+
+    .btn-delete-post{
+        width:100%;
+    }
+
+    .galeria-control{
+        justify-content:center;
+    }
+}
+.post-modal{
+    background:#050505;
+    border:2px solid #ff4500;
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.post-modal-header{
+    background:#090404;
+    border-bottom:2px solid rgba(255,69,0,.2);
+}
+
+.post-modal-header .modal-title{
+    color:#ff4500;
+    font-family:'Bebas Neue';
+    font-size:2rem;
+    letter-spacing:2px;
+}
+
+.modal-body{
+    padding:0;
+    background:#000;
+}
+
+.modal-post-img{
+    display:block;
+
+    width:auto;
+    max-width:100%;
+
+    max-height:500px;
+
+    margin:20px auto;
+
+    object-fit:contain;
+
+    border-radius:12px;
+}
+
+.modal-post-text{
+    padding:1.5rem;
+    color:#ddd;
+    font-size:1rem;
+    line-height:1.8;
+    margin:0;
+    background:#050505;
+}
+
+.modal-post-date{
+    display:block;
+    padding:0 1.5rem 1.5rem;
+    color:#888;
+    background:#050505;
+}

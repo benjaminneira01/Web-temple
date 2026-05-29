@@ -1,0 +1,230 @@
+      *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            background:
+            linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)),
+            url("{% static 'images/fondo-pagina.png' %}");
+
+            background-size:cover;
+            background-position:center;
+
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            font-family:'Roboto', sans-serif;
+            color:white;
+        }
+
+        .login-container{
+            width:100%;
+            max-width:500px;
+            padding:2rem;
+        }
+
+        .login-card{
+
+            background:rgba(15,15,15,0.95);
+
+            border:2px solid rgba(255,69,0,0.4);
+
+            border-radius:20px;
+
+            padding:3rem;
+
+            box-shadow:
+            0 0 30px rgba(255,69,0,0.3),
+            0 0 60px rgba(255,69,0,0.15);
+
+            backdrop-filter:blur(10px);
+        }
+
+        .logo{
+            text-align:center;
+            margin-bottom:2rem;
+        }
+
+        .logo img{
+            width:120px;
+            filter:drop-shadow(0 0 20px #ff4500);
+        }
+
+        .titulo{
+            text-align:center;
+            font-family:'Bebas Neue', sans-serif;
+            font-size:3rem;
+            letter-spacing:3px;
+            color:#ff4500;
+            margin-bottom:0.5rem;
+
+            text-shadow:
+            0 0 10px #ff4500,
+            0 0 30px #ff2200;
+        }
+
+        .subtitulo{
+            text-align:center;
+            color:#ccc;
+            margin-bottom:2rem;
+        }
+
+        .form-label{
+            color:#ff4500;
+            font-weight:bold;
+            margin-bottom:0.6rem;
+            text-transform:uppercase;
+            letter-spacing:1px;
+        }
+
+        .form-control{
+
+            background:#111;
+            border:2px solid rgba(255,69,0,0.2);
+
+            color:white;
+
+            padding:1rem;
+            border-radius:10px;
+
+            transition:0.3s;
+        }
+
+        .form-control:focus{
+
+            background:#111;
+            color:white;
+
+            border-color:#ff4500;
+
+            box-shadow:
+            0 0 10px rgba(255,69,0,0.5),
+            0 0 20px rgba(255,69,0,0.3);
+        }
+
+        .btn-dojo{
+
+            width:100%;
+
+            padding:1rem;
+
+            border:none;
+
+            border-radius:10px;
+
+            background:
+            linear-gradient(135deg,#ff4500,#ff2200);
+
+            color:white;
+
+            font-weight:700;
+
+            text-transform:uppercase;
+
+            letter-spacing:2px;
+
+            transition:0.3s;
+        }
+
+        .btn-dojo:hover{
+
+            transform:translateY(-3px);
+
+            box-shadow:
+            0 0 20px rgba(255,69,0,0.8),
+            0 0 40px rgba(255,69,0,0.4);
+        }
+
+        .registro-link{
+
+            text-align:center;
+            margin-top:2rem;
+            color:#ccc;
+        }
+
+        .registro-link a{
+
+            color:#ff4500;
+            text-decoration:none;
+            font-weight:bold;
+        }
+
+        .registro-link a:hover{
+            text-shadow:0 0 10px #ff4500;
+        }
+
+        .volver{
+
+            position:absolute;
+            top:30px;
+            left:30px;
+
+            color:white;
+            text-decoration:none;
+
+            border:2px solid #ff4500;
+
+            padding:0.8rem 1.2rem;
+
+            border-radius:10px;
+
+            transition:0.3s;
+        }
+
+        .volver:hover{
+
+            background:#ff4500;
+
+            color:white;
+
+            box-shadow:0 0 20px rgba(255,69,0,0.7);
+        }
+
+        .errorlist{
+
+            list-style:none;
+            padding:0;
+
+            color:#ff5c5c;
+
+            margin-bottom:1rem;
+        }
+        .password-wrapper{
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+}
+
+.toggle-password{
+
+    position:absolute;
+
+    right:15px;
+
+    background:none;
+
+    border:none;
+
+    color:#999;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    font-size:1rem;
+}
+
+.toggle-password:hover{
+
+    color:#ff4500;
+
+    text-shadow:
+    0 0 10px #ff4500;
+}

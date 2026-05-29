@@ -76,4 +76,13 @@ class Evento(models.Model):
 
     def __str__(self):
         return self.titulo
+
+class CombatePactado(models.Model):
+    evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='combates')
+    titulo = models.CharField(max_length=150)
+    imagen = models.ImageField(upload_to='combates/')
+    descripcion = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.titulo} - {self.evento.titulo}"
 # Create your models here.

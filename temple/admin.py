@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Perfil, HistoriaDojo,Evento
+from .models import Perfil, HistoriaDojo,Evento,CombatePactado
 
+admin.site.register(CombatePactado)
 
 @admin.register(Perfil)
 class PerfilAdmin(admin.ModelAdmin):
