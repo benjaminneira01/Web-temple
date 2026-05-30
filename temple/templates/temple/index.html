@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/galeria.css' %}">
+    <link rel="stylesheet" href="{% static 'css/eventos.css' %}">
 </head>
 <style>.hero { min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: url("{% static 'images/fondo-pagina.png' %}") center/cover no-repeat; padding: 9rem 2rem 2rem; }</style>
 <body>
@@ -140,8 +141,8 @@
 
         <div class="col-md-6 col-lg-4">
             <div class="evento-card"
-                data-bs-toggle="modal"
-                data-bs-target="#eventoModal{{ evento.id }}">
+            data-bs-toggle="modal"
+            data-bs-target="#eventoModal{{ evento.id }}">
 
                 <div class="evento-img-box">
                     {% if evento.imagen %}
@@ -174,7 +175,133 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="eventoModal{{ evento.id }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered evento-modal-dialog">
+        <div class="modal-content evento-modal">
 
+            <div class="modal-header">
+                <h5 class="modal-title">{{ evento.titulo }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+<div class="modal-body evento-modal-body">
+
+    <ul class="nav nav-pills evento-tabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active"
+                    data-bs-toggle="pill"
+                    data-bs-target="#afiche{{ evento.id }}"
+                    type="button">
+                <i class="fas fa-bullhorn"></i> Afiche
+            </button>
+        </li>
+
+        <li class="nav-item">
+            <button class="nav-link"
+                    data-bs-toggle="pill"
+                    data-bs-target="#combates{{ evento.id }}"
+                    type="button">
+                <i class="fas fa-fire"></i> Combates
+            </button>
+        </li>
+
+        <li class="nav-item">
+            <button class="nav-link"
+                    data-bs-toggle="pill"
+                    data-bs-target="#info{{ evento.id }}"
+                    type="button">
+                <i class="fas fa-circle-info"></i> Información
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content evento-tab-content">
+
+        <div class="tab-pane fade show active" id="afiche{{ evento.id }}">
+            {% if evento.imagen %}
+            <img src="{{ evento.imagen.url }}"
+                 class="evento-modal-img"
+                 alt="{{ evento.titulo }}">
+            {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="combates{{ evento.id }}">
+            {% if evento.combates.all %}
+            <div id="combatesCarousel{{ evento.id }}" class="carousel slide">
+                <div class="carousel-inner">
+
+                    {% for combate in evento.combates.all %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="fight-card">
+
+                            <div class="fight-image-box">
+                                <img src="{{ combate.imagen.url }}"
+                                     class="combate-img"
+                                     alt="{{ combate.titulo }}">
+                            </div>
+
+                            <div class="fight-info">
+                                <h4>{{ combate.titulo }}</h4>
+
+                                {% if combate.descripcion %}
+                                <p>{{ combate.descripcion }}</p>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                <button class="carousel-control-prev" type="button"
+                        data-bs-target="#combatesCarousel{{ evento.id }}"
+                        data-bs-slide="prev">
+                    <div class="fight-arrow">
+                        <i class="fas fa-angles-left"></i>
+                    </div>
+                </button>
+
+                <button class="carousel-control-next" type="button"
+                        data-bs-target="#combatesCarousel{{ evento.id }}"
+                        data-bs-slide="next">
+                    <div class="fight-arrow">
+                        <i class="fas fa-angles-right"></i>
+                    </div>
+                </button>
+            </div>
+            {% else %}
+            <div class="combates-empty">
+                <i class="fas fa-fist-raised"></i>
+                <p>Aún no hay combates pactados para este evento.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="info{{ evento.id }}">
+            <div class="evento-info-card">
+                <div class="evento-info-grid">
+                    <div class="evento-info-box">
+                        <i class="fas fa-calendar"></i>
+                        <span>Fecha</span>
+                        <strong>{{ evento.fecha }}</strong>
+                    </div>
+
+                    <div class="evento-info-box">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Dirección</span>
+                        <strong>{{ evento.lugar }}</strong>
+                    </div>
+                </div>
+
+                <p class="evento-info-desc">
+                    {{ evento.descripcion }}
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
         {% endfor %}
     </section>
 
