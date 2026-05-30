@@ -106,7 +106,18 @@
                 </div>
 
                 <div>
-                    <strong>{{ user.perfil.color_cinturon|default:"Pendiente" }}</strong>
+                    <strong>
+                        {% if user.perfil.color_cinturon %}
+                            {{ user.perfil.color_cinturon }}
+
+                        {% elif user.perfil.color_cinturon_pendiente %}
+                            Pendiente aprobación
+
+                        {% else %}
+                            Sin cinturón
+                        {% endif %}
+                    </strong>
+
                     <span>Cinturón</span>
                 </div>
 

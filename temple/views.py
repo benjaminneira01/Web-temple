@@ -148,7 +148,7 @@ def perfil(request):
 
             return redirect('perfil')
 
-            return redirect('perfil')
+            
 
         if 'subir_historia' in request.POST and historia_form.is_valid():
             historia = historia_form.save(commit=False)
