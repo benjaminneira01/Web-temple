@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import RegistroForm, PerfilForm, HistoriaDojoForm
 from .models import Perfil, HistoriaDojo,Evento
+from django.contrib import messages
+
 
 import json
 from django.http import JsonResponse
@@ -138,6 +140,13 @@ def perfil(request):
                 perfil_actualizado.foto_perfil = None
 
             perfil_actualizado.save()
+
+            messages.success(
+                request,
+                'Perfil actualizado correctamente'
+            )
+
+            return redirect('perfil')
 
             return redirect('perfil')
 

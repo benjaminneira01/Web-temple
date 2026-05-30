@@ -62,11 +62,46 @@ class RegistroForm(UserCreationForm):
 
 
 class PerfilForm(forms.ModelForm):
+    rango = forms.ChoiceField(
+        choices=[
+            ('Alumno', 'Alumno'),
+            ('Competidor', 'Competidor'),
+        ],
+        widget=forms.Select(attrs={
+            'class': 'form-control dojo-input'
+        })
+    )
+
+    victorias_amateur = forms.IntegerField(
+        required=False,
+        min_value=0,
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control dojo-input',
+            'placeholder': 'Victorias'
+        })
+    )
+
+    derrotas_amateur = forms.IntegerField(
+        required=False,
+        min_value=0,
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control dojo-input',
+            'placeholder': 'Derrotas'
+        })
+    )
+
     eliminar_foto = forms.BooleanField(required=False)
 
     class Meta:
         model = Perfil
-        fields = ['foto_perfil', 'biografia', 'rango', 'eliminar_foto']
+        fields = [
+            'foto_perfil',
+            'biografia',
+            'rango',
+            'victorias_amateur',
+            'derrotas_amateur',
+            'eliminar_foto'
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -79,12 +114,6 @@ class PerfilForm(forms.ModelForm):
             'class': 'form-control dojo-input',
             'placeholder': 'Escribe tu historia como guerrero...'
         })
-
-        self.fields['rango'].widget.attrs.update({
-            'class': 'form-control dojo-input',
-            'placeholder': 'Ej: Alumno, Competidor, Sensei...'
-        })
-
 
 class HistoriaDojoForm(forms.ModelForm):
     class Meta:

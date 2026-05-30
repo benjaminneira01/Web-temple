@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-{%load static %}
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,292 +9,469 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap"
-    rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+          rel="stylesheet">
 
+    <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
 </head>
 
-<body>
+<body class="perfil-dashboard-body">
 
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
+<div class="perfil-dashboard">
 
-        <a class="navbar-brand" href="{% url 'index' %}">
-            <img src="{% static 'images/logo-dojo.png' %}"
-                 alt="Dojo Temple"
-                 style="height: 50px; width: auto; margin-right: 10px;">
-            Dojo Temple
-        </a>
+    <aside class="perfil-sidebar">
 
-        <div class="ms-auto">
-            <div class="ms-auto d-flex align-items-center gap-2">
-
-                <a href="{% url 'index' %}" class="home-btn">
-                    <i class="fas fa-home"></i>
-                    Inicio
-                </a>
-                <form method="POST" action="{% url 'logout' %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="logout-btn" style="background:none;">
-                    <i class="fas fa-sign-out-alt"></i> Salir
-                </button>
-            </form>
-
+        <div class="sidebar-logo">
+            <img src="{% static 'images/logo-dojo.png' %}" alt="Dojo Temple">
+            <h2>Dojo Temple</h2>
         </div>
 
-    </div>
-</nav>
+        <nav class="sidebar-menu">
+
+            <a href="#resumen" class="active">
+                <i class="fas fa-home"></i> Resumen
+            </a>
+
+            <a href="#editar-perfil">
+                <i class="fas fa-user-edit"></i> Editar Perfil
+            </a>
+
+            <a href="#crear-publicacion">
+                <i class="fas fa-plus"></i> Crear Publicación
+            </a>
 
 
-<section class="perfil-header">
+            <a href="{% url 'index' %}">
+                <i class="fas fa-globe"></i> Inicio
+            </a>
 
-    <div class="perfil-avatar-wrap">
+        </nav>
 
-        {% if user.perfil.foto_perfil %}
-            <img src="{{ user.perfil.foto_perfil.url }}" class="perfil-foto">
-        {% else %}
-            <img src="/static/images/LOGO DOJO.png" class="perfil-foto">
-        {% endif %}
-
-    </div>
-
-    <h1 class="titulo">{{ user.username }}</h1>
-
-    <div class="marcial-info">
-        {% if user.perfil.apodo %}
-        <span><i class="fas fa-hand-fist"></i> {{ user.perfil.apodo }}</span>
-        {% endif %}
-
-        {% if user.perfil.color_cinturon %}
-        <span><i class="fas fa-award"></i> Cinturón {{ user.perfil.color_cinturon }}</span>
-        {% endif %}
-
-        {% if user.perfil.color_cinturon == 'Negro' and user.perfil.dan %}
-        <span><i class="fas fa-star"></i> {{ user.perfil.dan }}</span>
-        {% endif %}
-    </div>
-
-    <p class="subtitulo">{{ user.perfil.biografia }}</p>
-
-    <p style="color:#ff4500;font-weight:bold;">
-        {{ user.perfil.rango }}
-    </p>
-
-</section>
-<div class="contenido">
-
-    <div class="dojo-card perfil-edit-card">
-
-        <h2 class="card-title">
-            <i class="fas fa-user-edit"></i> Editar Perfil
-        </h2>
-
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'logout' %}" class="sidebar-logout">
             {% csrf_token %}
+            <button type="submit">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </form>
 
-            <div class="foto-upload-zone">
+    </aside>
 
-                <div class="foto-preview">
-                    {% if user.perfil.foto_perfil %}
-                        <img src="{{ user.perfil.foto_perfil.url }}">
-                    {% else %}
-                        <img src="/static/images/LOGO DOJO.png">
-                    {% endif %}
-                </div>
+    <main class="perfil-main">
 
-                <div class="foto-actions">
+        <section class="perfil-hero-dashboard" id="resumen">
 
-                    <label for="id_foto_perfil" class="upload-label">
-                        <i class="fas fa-camera"></i>
-                        Cambiar Foto
-                    </label>
-
-                    <input type="file" name="foto_perfil" id="id_foto_perfil" accept="image/*">
-
-                    {% if user.perfil.foto_perfil %}
-                    <label class="delete-photo-check">
-                        <input type="checkbox" name="eliminar_foto" id="id_eliminar_foto">
-                        <span>
-                            <i class="fas fa-trash"></i>
-                            Eliminar foto actual
-                        </span>
-                    </label>
-                    {% endif %}
-
-                </div>
-
+            <div class="perfil-avatar-wrap">
+                {% if user.perfil.foto_perfil %}
+                    <img src="{{ user.perfil.foto_perfil.url }}" class="perfil-foto">
+                {% else %}
+                    <img src="{% static 'images/logo-dojo.png' %}" class="perfil-foto">
+                {% endif %}
             </div>
 
-            <label class="form-label">Biografía</label>
-            {{ perfil_form.biografia }}
+            <h1 class="titulo">{{ user.username }}</h1>
 
-            <label class="form-label">Rango</label>
-            {{ perfil_form.rango }}
+            <p class="subtitulo">
+                {{ user.perfil.biografia|default:"Guerrero de Dojo Temple" }}
+            </p>
 
-            <button type="submit" name="guardar_perfil" class="btn-dojo mt-3">
-                <i class="fas fa-save"></i> Guardar Cambios
-            </button>
+            <div class="marcial-info">
 
-        </form>
-
-    </div>
-    <div class="dojo-card">
-        <h2 class="card-title"><i class="fas fa-feather-alt"></i> Crear Publicación</h2>
-
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            <label class="form-label">Título</label>
-            {{ historia_form.titulo }}
-
-            <label class="form-label">Texto</label>
-            {{ historia_form.descripcion }}
-
-            <label class="form-label">Imagen</label>
-
-                <div class="post-upload-zone">
-
-                    <input
-                        type="file"
-                        name="imagen"
-                        id="id_imagen"
-                        accept="image/*"
-                        class="post-file-input"
-                        onchange="previewPostImage(event)"
-                    >
-
-                    <label for="id_imagen" class="post-upload-label">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <span>Seleccionar imagen</span>
-                        <small>Sube una foto del entrenamiento, evento o logro</small>
-                    </label>
-
-                    <div id="postImagePreview" class="post-image-preview" style="display:none;">
-                        <img id="postPreviewImg" src="">
-                    </div>
-
-                </div>
-
-            <button type="submit" name="subir_historia" class="btn-dojo mt-3">
-                Publicar
-            </button>
-        </form>
-    </div>
-
-<div class="dojo-card">
-    <h2 class="card-title">
-        <i class="fas fa-scroll"></i> Tus Publicaciones
-    </h2>
-
-    <div class="row g-4">
-        {% for historia in historias %}
-
-        <div class="col-md-6 col-lg-4">
-
-            <div class="historia-card"
-                 data-bs-toggle="modal"
-                 data-bs-target="#postModal{{ historia.id }}"
-                 style="cursor:pointer;">
-
-                {% if historia.imagen %}
-                <img src="{{ historia.imagen.url }}" class="historia-img">
+                {% if user.perfil.apodo %}
+                <span>
+                    <i class="fas fa-hand-fist"></i>
+                    {{ user.perfil.apodo }}
+                </span>
                 {% endif %}
 
-                <div class="historia-content">
-                    <h3 class="historia-title">{{ historia.titulo }}</h3>
-                    <p style="color:#ccc;">
-                        {{ historia.descripcion|truncatechars:90 }}
-                    </p>
-                    <small style="color:#999;">
-                        {{ historia.fecha_creacion }}
-                    </small>
+                {% if user.perfil.rango == 'Competidor' %}
+                <span>
+                    <i class="fas fa-trophy"></i>
+                    Récord {{ user.perfil.victorias_amateur|default:0 }}-{{ user.perfil.derrotas_amateur|default:0 }}
+                </span>
+                {% endif %}
+
+            </div>
+
+            <div class="perfil-stats">
+
+                <div>
+                    <strong>{{ historias.count }}</strong>
+                    <span>Publicaciones</span>
+                </div>
+
+                <div>
+                    <strong>{{ user.perfil.color_cinturon|default:"Pendiente" }}</strong>
+                    <span>Cinturón</span>
+                </div>
+
+                <div>
+                    <strong>{{ user.perfil.rango|default:"Alumno" }}</strong>
+                    <span>Rango</span>
                 </div>
 
             </div>
 
-        </div>
+        </section>
 
-        <div class="modal fade" id="postModal{{ historia.id }}" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content post-modal">
+        <section class="perfil-content-grid">
 
-                    <div class="modal-header post-modal-header">
-                        <h5 class="modal-title">
-                            {{ historia.titulo }}
-                        </h5>
+            <div class="perfil-center">
 
-                        <button type="button"
-                                class="btn-close btn-close-white"
-                                data-bs-dismiss="modal">
-                        </button>
-                    </div>
+                <div class="dojo-card perfil-edit-card" id="editar-perfil">
 
-                    <div class="modal-body">
+                    <h2 class="card-title">
+                        <i class="fas fa-user-edit"></i> Editar Perfil
+                    </h2>
 
-                        {% if historia.imagen %}
-                        <img src="{{ historia.imagen.url }}" class="modal-post-img">
-                        {% endif %}
+                    <div class="edit-profile-layout">
 
-                        <p class="modal-post-text">
-                            {{ historia.descripcion }}
-                        </p>
+                        <div class="edit-profile-tabs">
 
-                        <small class="modal-post-date">
-                            {{ historia.fecha_creacion }}
-                        </small>
+                            <button type="button" class="edit-tab active" data-edit-tab="info">
+                                <i class="fas fa-user"></i>
+                                Información
+                            </button>
 
-                    </div>
+                            <button type="button" class="edit-tab" data-edit-tab="foto">
+                                <i class="fas fa-camera"></i>
+                                Foto de Perfil
+                            </button>
 
-                    <div class="publicacion-footer">
+                            <button type="button" class="edit-tab disabled-tab">
+                                <i class="fas fa-shield-alt"></i>
+                                Seguridad
+                            </button>
 
-                        <div class="galeria-control">
-
-                            <label class="switch">
-                                <input type="checkbox"
-                                    {% if historia.mostrar_galeria %}checked{% endif %}
-                                    onchange="toggleGaleria({{ historia.id }}, this.checked)">
-
-                                <span class="slider"></span>
-                            </label>
-
-                            <span class="galeria-text">
-                                Mostrar en galería principal
-                            </span>
+                            <button type="button" class="edit-tab disabled-tab">
+                                <i class="fas fa-bell"></i>
+                                Notificaciones
+                            </button>
 
                         </div>
 
                         <form method="POST"
-                            action="{% url 'eliminar_publicacion' historia.id %}">
+                            enctype="multipart/form-data"
+                            class="edit-profile-form">
+
                             {% csrf_token %}
 
-                            <button type="submit"
-                                    class="btn-delete-post"
-                                    onclick="return confirm('¿Eliminar esta publicación?');">
+                            <div class="edit-form-section edit-panel active" id="edit-info">
 
-                                <i class="fas fa-trash"></i>
-                                Eliminar publicación
+                                <label class="form-label">Biografía</label>
+                                {{ perfil_form.biografia }}
 
-                            </button>
+                                <label class="form-label">Rango</label>
+                                {{ perfil_form.rango }}
+
+                                <div id="record-fields" class="record-grid" style="display:none;">
+
+                                    <label class="form-label">🏆 Victorias Amateur</label>
+                                    {{ perfil_form.victorias_amateur }}
+
+                                    <label class="form-label">💀 Derrotas Amateur</label>
+                                    {{ perfil_form.derrotas_amateur }}
+
+                                </div>
+
+                            </div>
+
+                            <div class="edit-photo-section edit-panel" id="edit-foto">
+
+                                <div class="photo-panel-header">
+                                    <div>
+                                        <h3><i class="fas fa-camera"></i> Foto de Perfil</h3>
+                                        <p>Actualiza tu imagen y muestra tu esencia de guerrero.</p>
+                                    </div>
+                                </div>
+
+                                <div class="photo-panel-grid">
+
+                                    <div class="current-photo-card">
+                                        <div class="current-photo-ring">
+                                            {% if user.perfil.foto_perfil %}
+                                                <img src="{{ user.perfil.foto_perfil.url }}" alt="Foto actual">
+                                            {% else %}
+                                                <img src="{% static 'images/logo-dojo.png' %}" alt="Foto actual">
+                                            {% endif %}
+
+                                            <div class="photo-camera-badge">
+                                                <i class="fas fa-camera"></i>
+                                            </div>
+                                        </div>
+
+                                        <span>Tu imagen actual</span>
+                                    </div>
+
+                                    <div class="photo-actions-panel">
+
+                                        <div class="photo-action-title">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <div>
+                                                <h4>Cambiar Foto</h4>
+                                                <p>Formatos permitidos: JPG, PNG. Máx. 5MB.</p>
+                                            </div>
+                                        </div>
+
+                                        <input type="file"
+                                            name="foto_perfil"
+                                            id="id_foto_perfil"
+                                            accept="image/*"
+                                            hidden>
+
+                                        <label for="id_foto_perfil" class="photo-drop-zone">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <strong>Arrastra tu archivo aquí</strong>
+                                            <span>o haz clic para seleccionar</span>
+                                        </label>
+
+                                        {% if user.perfil.foto_perfil %}
+                                        <label class="photo-delete-box">
+                                            <div class="delete-left">
+                                                <i class="fas fa-trash"></i>
+                                                <div>
+                                                    <strong>Eliminar foto actual</strong>
+                                                    <span>Tu foto será eliminada permanentemente.</span>
+                                                </div>
+                                            </div>
+
+                                            <input type="checkbox"
+                                                name="eliminar_foto"
+                                                id="id_eliminar_foto">
+
+                                            <span class="delete-toggle"></span>
+                                        </label>
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        
+
+                            <div class="edit-save-area">
+                                <button type="submit"
+                                        name="guardar_perfil"
+                                        class="btn-dojo">
+                                    <i class="fas fa-save"></i>
+                                    Guardar Cambios
+                                </button>
+                            </div>
 
                         </form>
 
                     </div>
 
                 </div>
+
+                <div class="dojo-card" id="crear-publicacion">
+
+                    <h2 class="card-title">
+                        <i class="fas fa-feather-alt"></i> Crear Publicación
+                    </h2>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <label class="form-label">Título</label>
+                        {{ historia_form.titulo }}
+
+                        <label class="form-label">Texto</label>
+                        {{ historia_form.descripcion }}
+
+                        <label class="form-label">Imagen</label>
+
+                        <div class="post-upload-zone">
+
+                            <input type="file"
+                                   name="imagen"
+                                   id="id_imagen"
+                                   accept="image/*"
+                                   class="post-file-input"
+                                   onchange="previewPostImage(event)">
+
+                            <label for="id_imagen" class="post-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Seleccionar imagen</span>
+                                <small>Sube una foto del entrenamiento, evento o logro</small>
+                            </label>
+
+                            <div id="postImagePreview"
+                                 class="post-image-preview"
+                                 style="display:none;">
+                                <img id="postPreviewImg" src="">
+                            </div>
+
+                        </div>
+
+                        <button type="submit"
+                                name="subir_historia"
+                                class="btn-dojo mt-3">
+                            <i class="fas fa-plus"></i>
+                            Publicar
+                        </button>
+
+                    </form>
+
+                </div>
+
             </div>
-        </div>
 
-        {% empty %}
+            <aside class="perfil-posts-panel" id="publicaciones">
 
-        <p style="color:#777;">Aún no has publicado nada.</p>
+                <div class="dojo-card">
 
-        {% endfor %}
-    </div>
+                    <h2 class="card-title">
+                        <i class="fas fa-scroll"></i> Mis Publicaciones
+                    </h2>
+
+                    <div class="row g-4">
+
+                        {% for historia in historias %}
+
+                        <div class="col-md-6 col-lg-4">
+
+                            <div class="historia-card"
+                                 data-bs-toggle="modal"
+                                 data-bs-target="#postModal{{ historia.id }}"
+                                 style="cursor:pointer;">
+
+                                {% if historia.imagen %}
+                                    <img src="{{ historia.imagen.url }}" class="historia-img">
+                                {% endif %}
+
+                                <div class="historia-content">
+                                    <h3 class="historia-title">
+                                        {{ historia.titulo }}
+                                    </h3>
+
+                                    <p style="color:#ccc;">
+                                        {{ historia.descripcion|truncatechars:90 }}
+                                    </p>
+
+                                    <small style="color:#999;">
+                                        {{ historia.fecha_creacion }}
+                                    </small>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="modal fade" id="postModal{{ historia.id }}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content post-modal">
+
+                                    <div class="modal-header post-modal-header">
+                                        <h5 class="modal-title">
+                                            {{ historia.titulo }}
+                                        </h5>
+
+                                        <button type="button"
+                                                class="btn-close btn-close-white"
+                                                data-bs-dismiss="modal">
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        {% if historia.imagen %}
+                                            <img src="{{ historia.imagen.url }}" class="modal-post-img">
+                                        {% endif %}
+
+                                        <p class="modal-post-text">
+                                            {{ historia.descripcion }}
+                                        </p>
+
+                                        <small class="modal-post-date">
+                                            {{ historia.fecha_creacion }}
+                                        </small>
+
+                                    </div>
+
+                                    <div class="publicacion-footer">
+
+                                        <div class="galeria-control">
+
+                                            <label class="switch">
+                                                <input type="checkbox"
+                                                       {% if historia.mostrar_galeria %}checked{% endif %}
+                                                       onchange="toggleGaleria({{ historia.id }}, this.checked)">
+
+                                                <span class="slider"></span>
+                                            </label>
+
+                                            <span class="galeria-text">
+                                                Mostrar en galería principal
+                                            </span>
+
+                                        </div>
+
+                                        <form method="POST"
+                                              action="{% url 'eliminar_publicacion' historia.id %}">
+                                            {% csrf_token %}
+
+                                            <button type="submit"
+                                                    class="btn-delete-post"
+                                                    onclick="return confirm('¿Eliminar esta publicación?');">
+
+                                                <i class="fas fa-trash"></i>
+                                                Eliminar
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        {% empty %}
+
+                        <p style="color:#777;">
+                            Aún no has publicado nada.
+                        </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+    </main>
+
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.querySelectorAll('.edit-tab[data-edit-tab]').forEach(tab => {
+    tab.addEventListener('click', function(){
+        document.querySelectorAll('.edit-tab[data-edit-tab]').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        document.querySelectorAll('.edit-panel').forEach(panel => {
+            panel.classList.remove('active');
+        });
+
+        this.classList.add('active');
+
+        const panelId = 'edit-' + this.dataset.editTab;
+        document.getElementById(panelId).classList.add('active');
+    });
+});
+</script>
+
 <script>
 function toggleGaleria(publicacionId, checked){
     fetch(`/toggle-galeria/${publicacionId}/`, {
@@ -313,6 +490,78 @@ function toggleGaleria(publicacionId, checked){
         }
     });
 }
+
+function previewPostImage(event){
+    const input = event.target;
+    const previewContainer = document.getElementById('postImagePreview');
+    const previewImg = document.getElementById('postPreviewImg');
+
+    if(input.files && input.files[0]){
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+            previewImg.src = e.target.result;
+            previewContainer.style.display = 'block';
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const rangoSelect = document.getElementById('id_rango');
+    const recordFields = document.getElementById('record-fields');
+
+    function toggleRecordFields(){
+        if(rangoSelect.value === 'Competidor'){
+            recordFields.style.display = 'block';
+        }else{
+            recordFields.style.display = 'none';
+        }
+    }
+
+    if(rangoSelect && recordFields){
+        toggleRecordFields();
+        rangoSelect.addEventListener('change', toggleRecordFields);
+    }
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if messages %}
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+
+    {% for message in messages %}
+    Swal.fire({
+        imageUrl: "{% static 'images/logo-dojo.png' %}",
+        imageWidth: 250,
+        imageHeight: 180,
+
+        title: '¡Perfil actualizado!',
+        text: '{{ message }}',
+
+        icon: 'success',
+        iconColor: '#ff4500',
+
+        background: '#0a0a0a',
+        color: '#ffffff',
+
+        confirmButtonColor: '#ff4500',
+
+        showConfirmButton: false,
+        timer: 2500,
+
+        customClass: {
+            popup: 'dojo-swal'
+        }
+    });
+    {% endfor %}
+
+});
+</script>
+{% endif %}
 </body>
 </html>

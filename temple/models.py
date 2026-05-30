@@ -7,6 +7,9 @@ class Perfil(models.Model):
 
     apodo = models.CharField(max_length=100, blank=True)
 
+    victorias_amateur = models.PositiveIntegerField(default=0)
+    derrotas_amateur = models.PositiveIntegerField(default=0)
+
     color_cinturon = models.CharField(
         max_length=50,
         blank=True,
