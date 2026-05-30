@@ -42,6 +42,10 @@
                 <i class="fas fa-plus"></i> Crear Publicación
             </a>
 
+            <a href="#publicaciones">
+                <i class="fas fa-scroll"></i>
+                Mis Publicaciones
+            </a>
 
             <a href="{% url 'index' %}">
                 <i class="fas fa-globe"></i> Inicio
@@ -250,8 +254,6 @@
 
                             </div>
 
-                        
-
                             <div class="edit-save-area">
                                 <button type="submit"
                                         name="guardar_perfil"
@@ -279,7 +281,7 @@
                         <label class="form-label">Título</label>
                         {{ historia_form.titulo }}
 
-                        <label class="form-label">Texto</label>
+                        <label class="form-label">Descripción</label>
                         {{ historia_form.descripcion }}
 
                         <label class="form-label">Imagen</label>
@@ -287,11 +289,11 @@
                         <div class="post-upload-zone">
 
                             <input type="file"
-                                   name="imagen"
-                                   id="id_imagen"
-                                   accept="image/*"
-                                   class="post-file-input"
-                                   onchange="previewPostImage(event)">
+                                name="imagen"
+                                id="id_imagen"
+                                accept="image/*"
+                                class="post-file-input"
+                                onchange="previewPostImage(event)">
 
                             <label for="id_imagen" class="post-upload-label">
                                 <i class="fas fa-cloud-upload-alt"></i>
@@ -300,8 +302,8 @@
                             </label>
 
                             <div id="postImagePreview"
-                                 class="post-image-preview"
-                                 style="display:none;">
+                                class="post-image-preview"
+                                style="display:none;">
                                 <img id="postPreviewImg" src="">
                             </div>
 
@@ -310,8 +312,8 @@
                         <button type="submit"
                                 name="subir_historia"
                                 class="btn-dojo mt-3">
-                            <i class="fas fa-plus"></i>
-                            Publicar
+                            <i class="fas fa-fire"></i>
+                            Subir Publicación
                         </button>
 
                     </form>
@@ -320,133 +322,130 @@
 
             </div>
 
-            <aside class="perfil-posts-panel" id="publicaciones">
+        </section>
 
-                <div class="dojo-card">
+        <section class="publicaciones-grid-section" id="publicaciones">
 
-                    <h2 class="card-title">
-                        <i class="fas fa-scroll"></i> Mis Publicaciones
-                    </h2>
+            <div class="dojo-card">
 
-                    <div class="row g-4">
+                <h2 class="card-title">
+                    <i class="fas fa-scroll"></i> Mis Publicaciones
+                </h2>
 
-                        {% for historia in historias %}
+                <div class="row g-4">
 
-                        <div class="col-md-6 col-lg-4">
+                    {% for historia in historias %}
 
-                            <div class="historia-card"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#postModal{{ historia.id }}"
-                                 style="cursor:pointer;">
+                    <div class="col-md-6 col-lg-3">
 
-                                {% if historia.imagen %}
-                                    <img src="{{ historia.imagen.url }}" class="historia-img">
-                                {% endif %}
+                        <div class="historia-card"
+                            data-bs-toggle="modal"
+                            data-bs-target="#postModal{{ historia.id }}"
+                            style="cursor:pointer;">
 
-                                <div class="historia-content">
-                                    <h3 class="historia-title">
-                                        {{ historia.titulo }}
-                                    </h3>
+                            {% if historia.imagen %}
+                                <img src="{{ historia.imagen.url }}" class="historia-img">
+                            {% endif %}
 
-                                    <p style="color:#ccc;">
-                                        {{ historia.descripcion|truncatechars:90 }}
-                                    </p>
+                            <div class="historia-content">
 
-                                    <small style="color:#999;">
-                                        {{ historia.fecha_creacion }}
-                                    </small>
-                                </div>
+                                <h3 class="historia-title">
+                                    {{ historia.titulo }}
+                                </h3>
+
+                                <p style="color:#ccc;">
+                                    {{ historia.descripcion|truncatechars:90 }}
+                                </p>
+
+                                <small style="color:#999;">
+                                    {{ historia.fecha_creacion }}
+                                </small>
 
                             </div>
 
                         </div>
 
-                        <div class="modal fade" id="postModal{{ historia.id }}" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content post-modal">
+                    </div>
 
-                                    <div class="modal-header post-modal-header">
-                                        <h5 class="modal-title">
-                                            {{ historia.titulo }}
-                                        </h5>
+                    {% empty %}
 
-                                        <button type="button"
-                                                class="btn-close btn-close-white"
-                                                data-bs-dismiss="modal">
-                                        </button>
-                                    </div>
+                    <p style="color:#777;">
+                        Aún no has publicado nada.
+                    </p>
 
-                                    <div class="modal-body">
+                    {% endfor %}
 
-                                        {% if historia.imagen %}
-                                            <img src="{{ historia.imagen.url }}" class="modal-post-img">
-                                        {% endif %}
+                </div>
 
-                                        <p class="modal-post-text">
-                                            {{ historia.descripcion }}
-                                        </p>
+            </div>
 
-                                        <small class="modal-post-date">
-                                            {{ historia.fecha_creacion }}
-                                        </small>
+        </section>
 
-                                    </div>
+        {% for historia in historias %}
+        <div class="modal fade" id="postModal{{ historia.id }}" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content post-modal">
 
-                                    <div class="publicacion-footer">
+                    <div class="modal-header post-modal-header">
+                        <h5 class="modal-title">
+                            {{ historia.titulo }}
+                        </h5>
 
-                                        <div class="galeria-control">
+                        <button type="button"
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal">
+                        </button>
+                    </div>
 
-                                            <label class="switch">
-                                                <input type="checkbox"
-                                                       {% if historia.mostrar_galeria %}checked{% endif %}
-                                                       onchange="toggleGaleria({{ historia.id }}, this.checked)">
+                    <div class="modal-body">
 
-                                                <span class="slider"></span>
-                                            </label>
+                        {% if historia.imagen %}
+                            <img src="{{ historia.imagen.url }}" class="modal-post-img">
+                        {% endif %}
 
-                                            <span class="galeria-text">
-                                                Mostrar en galería principal
-                                            </span>
-
-                                        </div>
-
-                                        <form method="POST"
-                                              action="{% url 'eliminar_publicacion' historia.id %}">
-                                            {% csrf_token %}
-
-                                            <button type="submit"
-                                                    class="btn-delete-post"
-                                                    onclick="return confirm('¿Eliminar esta publicación?');">
-
-                                                <i class="fas fa-trash"></i>
-                                                Eliminar
-
-                                            </button>
-
-                                        </form>
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        {% empty %}
-
-                        <p style="color:#777;">
-                            Aún no has publicado nada.
+                        <p class="modal-post-text">
+                            {{ historia.descripcion }}
                         </p>
 
-                        {% endfor %}
+                        <small class="modal-post-date">
+                            {{ historia.fecha_creacion }}
+                        </small>
+
+                    </div>
+
+                    <div class="publicacion-footer">
+
+                        <div class="galeria-control">
+                            <label class="switch">
+                                <input type="checkbox"
+                                    {% if historia.mostrar_galeria %}checked{% endif %}
+                                    onchange="toggleGaleria({{ historia.id }}, this.checked)">
+                                <span class="slider"></span>
+                            </label>
+
+                            <span class="galeria-text">
+                                Mostrar en galería principal
+                            </span>
+                        </div>
+
+                        <form method="POST"
+                            action="{% url 'eliminar_publicacion' historia.id %}">
+                            {% csrf_token %}
+
+                            <button type="submit"
+                                    class="btn-delete-post"
+                                    onclick="return confirm('¿Eliminar esta publicación?');">
+                                <i class="fas fa-trash"></i>
+                                Eliminar
+                            </button>
+                        </form>
 
                     </div>
 
                 </div>
-
-            </aside>
-
-        </section>
-
+            </div>
+        </div>
+        {% endfor %}
     </main>
 
 </div>
