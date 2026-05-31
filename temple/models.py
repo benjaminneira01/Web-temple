@@ -3,6 +3,18 @@ from django.contrib.auth.models import User
 
 
 class Perfil(models.Model):
+
+    banner_perfil = models.CharField(
+    max_length=100,
+    default='fondo-pagina.png',
+    choices=[
+        ('fondo-pagina.png', 'Banner actual'),
+        ('Banners1.png', 'Banner Dojo'),
+        ('Banners2.png', 'Banner Fuego'),
+        ('Banners3.png', 'Banner Zen'),
+        ('Banners4.png', 'Banner Samurai'),
+    ]
+)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     apodo = models.CharField(max_length=100, blank=True)
@@ -67,6 +79,7 @@ class Perfil(models.Model):
         ('10° Dan', '10° Dan'),
     ]
 )
+    
 
 
 class HistoriaDojo(models.Model):

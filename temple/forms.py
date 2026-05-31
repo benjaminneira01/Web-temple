@@ -100,6 +100,7 @@ class PerfilForm(forms.ModelForm):
             'rango',
             'victorias_amateur',
             'derrotas_amateur',
+            'banner_perfil',
             'eliminar_foto'
         ]
 

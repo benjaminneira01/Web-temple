@@ -64,7 +64,11 @@
 
     <main class="perfil-main">
 
-        <section class="perfil-hero-dashboard" id="resumen">
+        <section class="perfil-hero-dashboard"
+         id="resumen"
+         style="background-image:
+            linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.92)),
+            url('{% static 'images/' %}{{ user.perfil.banner_perfil }}');">
 
             <div class="perfil-avatar-wrap">
                 {% if user.perfil.foto_perfil %}
@@ -109,25 +113,36 @@
                     <strong>
                         {% if user.perfil.color_cinturon %}
                             {{ user.perfil.color_cinturon }}
-
                         {% elif user.perfil.color_cinturon_pendiente %}
                             Pendiente aprobación
-
                         {% else %}
                             Sin cinturón
                         {% endif %}
                     </strong>
-
                     <span>Cinturón</span>
                 </div>
+
+                {% if user.perfil.color_cinturon == 'Negro' or user.perfil.color_cinturon_pendiente == 'Negro' %}
+                <div>
+                    <strong>
+                        {% if user.perfil.dan %}
+                            {{ user.perfil.dan }}
+                        {% elif user.perfil.dan_pendiente %}
+                            Pendiente aprobación
+                        {% else %}
+                            Sin Dan
+                        {% endif %}
+                    </strong>
+
+                    <span>Dan</span>
+                </div>
+                {% endif %}
 
                 <div>
                     <strong>{{ user.perfil.rango|default:"Alumno" }}</strong>
                     <span>Rango</span>
                 </div>
-
-            </div>
-
+            </div>    
         </section>
 
         <section class="perfil-content-grid">
@@ -144,10 +159,17 @@
 
                         <div class="edit-profile-tabs">
 
+                            
                             <button type="button" class="edit-tab active" data-edit-tab="info">
                                 <i class="fas fa-user"></i>
                                 Información
                             </button>
+                            
+                            <button type="button" class="edit-tab" data-edit-tab="banner">
+                                <i class="fas fa-image"></i>
+                                Banner
+                            </button>
+
 
                             <button type="button" class="edit-tab" data-edit-tab="foto">
                                 <i class="fas fa-camera"></i>
@@ -178,7 +200,34 @@
                                 {{ perfil_form.biografia }}
 
                                 <label class="form-label">Rango</label>
-                                {{ perfil_form.rango }}
+
+                                    <div class="selector-cards">
+
+                                        <input type="radio"
+                                            name="rango"
+                                            id="rango_alumno"
+                                            value="Alumno"
+                                            {% if user.perfil.rango == "Alumno" or not user.perfil.rango %}checked{% endif %}
+                                            hidden>
+
+                                        <label for="rango_alumno" class="option-card">
+                                            <i class="fas fa-user-graduate"></i>
+                                            <span>Alumno</span>
+                                        </label>
+
+                                        <input type="radio"
+                                            name="rango"
+                                            id="rango_competidor"
+                                            value="Competidor"
+                                            {% if user.perfil.rango == "Competidor" %}checked{% endif %}
+                                            hidden>
+
+                                        <label for="rango_competidor" class="option-card">
+                                            <i class="fas fa-trophy"></i>
+                                            <span>Competidor</span>
+                                        </label>
+
+                                    </div>
 
                                 <div id="record-fields" class="record-grid" style="display:none;">
 
@@ -230,15 +279,28 @@
                                         </div>
 
                                         <input type="file"
-                                            name="foto_perfil"
-                                            id="id_foto_perfil"
-                                            accept="image/*"
-                                            hidden>
+                                                name="foto_perfil"
+                                                id="id_foto_perfil"
+                                                accept="image/*"
+                                                onchange="previewPerfilImage(event)"
+                                                hidden>
 
                                         <label for="id_foto_perfil" class="photo-drop-zone">
-                                            <i class="fas fa-cloud-upload-alt"></i>
-                                            <strong>Arrastra tu archivo aquí</strong>
-                                            <span>o haz clic para seleccionar</span>
+
+                                            <div class="upload-placeholder" id="perfilUploadPlaceholder">
+                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                <strong>Arrastra tu archivo aquí</strong>
+                                                <span>o haz clic para seleccionar</span>
+                                            </div>
+
+                                            <div class="perfil-preview-zone"
+                                                id="perfilPreviewZone"
+                                                style="display:none;">
+
+                                                <img id="perfilPreviewImg" src="">
+
+                                            </div>
+
                                         </label>
 
                                         {% if user.perfil.foto_perfil %}
@@ -264,7 +326,68 @@
                                 </div>
 
                             </div>
+                            <div class="edit-banner-section edit-panel" id="edit-banner">
 
+                                <div class="banner-panel-header">
+                                    <h3><i class="fas fa-image"></i> Cambiar Banner</h3>
+                                    <p>Selecciona el fondo que aparecerá en la parte superior de tu perfil.</p>
+                                </div>
+
+                                <div class="banner-options">
+
+                                    <label class="banner-card">
+                                        <input type="radio"
+                                            name="banner_perfil"
+                                            value="fondo-pagina.png"
+                                            {% if user.perfil.banner_perfil == 'fondo-pagina.png' %}checked{% endif %}>
+
+                                        <img src="{% static 'images/fondo-pagina.png' %}">
+                                        <span>Banner actual</span>
+                                    </label>
+
+                                    <label class="banner-card">
+                                        <input type="radio"
+                                            name="banner_perfil"
+                                            value="Banners1.png"
+                                            {% if user.perfil.banner_perfil == 'Banners1.png' %}checked{% endif %}>
+
+                                        <img src="{% static 'images/Banners1.png' %}">
+                                        <span>Dojo oscuro</span>
+                                    </label>
+
+                                    <label class="banner-card">
+                                        <input type="radio"
+                                            name="banner_perfil"
+                                            value="Banners2.png"
+                                            {% if user.perfil.banner_perfil == 'Banners2.png' %}checked{% endif %}>
+
+                                        <img src="{% static 'images/Banners2.png' %}">
+                                        <span>Fuego</span>
+                                    </label>
+
+                                    <label class="banner-card">
+                                        <input type="radio"
+                                            name="banner_perfil"
+                                            value="Banners3.png"
+                                            {% if user.perfil.banner_perfil == 'Banners3.png' %}checked{% endif %}>
+
+                                        <img src="{% static 'images/Banners3.png' %}">
+                                        <span>Zen</span>
+                                    </label>
+
+                                    <label class="banner-card">
+                                        <input type="radio"
+                                            name="banner_perfil"
+                                            value="Banners4.png"
+                                            {% if user.perfil.banner_perfil == 'Banners4.png' %}checked{% endif %}>
+
+                                        <img src="{% static 'images/Banners4.png' %}">
+                                        <span>Samurai</span>
+                                    </label>
+
+                                </div>
+
+                            </div>
                             <div class="edit-save-area">
                                 <button type="submit"
                                         name="guardar_perfil"
@@ -521,21 +644,24 @@ function previewPostImage(event){
 
 <script>
 document.addEventListener('DOMContentLoaded', function(){
-    const rangoSelect = document.getElementById('id_rango');
     const recordFields = document.getElementById('record-fields');
+    const rangoRadios = document.querySelectorAll('input[name="rango"]');
 
     function toggleRecordFields(){
-        if(rangoSelect.value === 'Competidor'){
-            recordFields.style.display = 'block';
+        const selected = document.querySelector('input[name="rango"]:checked');
+
+        if(selected && selected.value === 'Competidor'){
+            recordFields.style.display = 'grid';
         }else{
             recordFields.style.display = 'none';
         }
     }
 
-    if(rangoSelect && recordFields){
-        toggleRecordFields();
-        rangoSelect.addEventListener('change', toggleRecordFields);
-    }
+    rangoRadios.forEach(radio => {
+        radio.addEventListener('change', toggleRecordFields);
+    });
+
+    toggleRecordFields();
 });
 </script>
 
@@ -572,6 +698,44 @@ document.addEventListener('DOMContentLoaded', function(){
 
 });
 </script>
+
+
 {% endif %}
+<script>
+function previewPerfilImage(event){
+
+    const input = event.target;
+
+    const currentPhoto =
+        document.querySelector('.current-photo-ring img');
+
+    const previewZone =
+        document.getElementById('perfilPreviewZone');
+
+    const previewImg =
+        document.getElementById('perfilPreviewImg');
+
+    const placeholder =
+        document.getElementById('perfilUploadPlaceholder');
+
+    if(input.files && input.files[0]){
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            currentPhoto.src = e.target.result;
+
+            previewImg.src = e.target.result;
+
+            previewZone.style.display = 'flex';
+
+            placeholder.style.display = 'none';
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
 </body>
 </html>

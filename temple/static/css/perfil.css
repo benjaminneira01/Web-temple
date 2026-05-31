@@ -206,10 +206,13 @@ body.perfil-dashboard-body{
 /* STATS */
 
 .perfil-stats{
-    max-width:850px;
+    max-width:950px;
     margin:1.8rem auto 0;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    display:flex;
+    justify-content:center;
+    align-items:stretch;
+
     background:rgba(0,0,0,.58);
     border:1px solid rgba(255,69,0,.25);
     border-radius:16px;
@@ -217,12 +220,14 @@ body.perfil-dashboard-body{
     box-shadow:0 0 25px rgba(255,69,0,.12);
 }
 
-.perfil-stats div{
+.perfil-stats > div{
+    flex:1;
+    text-align:center;
     padding:1.2rem;
     border-right:1px solid rgba(255,69,0,.15);
 }
 
-.perfil-stats div:last-child{
+.perfil-stats > div:last-child{
     border-right:none;
 }
 
@@ -715,17 +720,18 @@ textarea{
     }
 
     .perfil-stats{
-        grid-template-columns:1fr;
+        flex-direction:column;
     }
 
-    .perfil-stats div{
+    .perfil-stats > div{
         border-right:none;
         border-bottom:1px solid rgba(255,69,0,.15);
     }
 
-    .perfil-stats div:last-child{
+    .perfil-stats > div:last-child{
         border-bottom:none;
     }
+}
 
     .foto-upload-zone{
         flex-direction:column;
@@ -930,48 +936,65 @@ html{
 .dojo-input,
 .dojo-input.form-control,
 textarea.dojo-input,
+/* SELECT PREMIUM */
+
 select.dojo-input{
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+
+    cursor:pointer;
+
     background:
         linear-gradient(
             145deg,
             rgba(15,15,15,.98),
             rgba(5,5,5,.98)
-        ) !important;
+        );
 
-    border:1px solid rgba(255,69,0,.18) !important;
-    border-radius:16px !important;
+    border:2px solid rgba(255,69,0,.35) !important;
 
-    color:#fff !important;
+    border-radius:18px !important;
 
-    padding:1rem 1.2rem !important;
+    padding:1rem 3.5rem 1rem 1.2rem !important;
 
-    font-size:1rem;
-    font-weight:500;
+    color:white !important;
+
+    font-weight:700;
+
+    box-shadow:
+        inset 0 0 15px rgba(255,69,0,.05),
+        0 0 18px rgba(255,69,0,.08);
 
     transition:.3s ease;
 
+    /* Flecha personalizada */
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='%23ff4500' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5l6.5 6 6.5-6' stroke='%23ff4500' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+
+    background-repeat:no-repeat;
+    background-position:right 18px center;
+}
+
+select.dojo-input:hover{
+    border-color:#ff4500 !important;
     box-shadow:
-        inset 0 0 15px rgba(255,69,0,.04),
-        0 0 10px rgba(0,0,0,.4);
+        0 0 20px rgba(255,69,0,.25);
 }
 
-/* Hover */
-
-.dojo-input:hover{
-    border-color:rgba(255,69,0,.45) !important;
-}
-
-/* Focus */
-
-.dojo-input:focus{
-    background:#080808 !important;
-
+select.dojo-input:focus{
     border-color:#ff4500 !important;
 
     box-shadow:
         0 0 0 3px rgba(255,69,0,.15),
-        0 0 25px rgba(255,69,0,.25),
-        inset 0 0 20px rgba(255,69,0,.08) !important;
+        0 0 25px rgba(255,69,0,.35);
+}
+select.dojo-input option{
+    background:#080808;
+    color:white;
+    padding:15px;
+    font-weight:700;
 }
 
 /* Placeholder */
@@ -1542,4 +1565,184 @@ select.dojo-input{
 
 #crear-publicacion .btn-dojo:hover{
     transform:translateY(-3px) scale(1.02);
+}
+.selector-cards{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1rem;
+    margin-top:.8rem;
+}
+
+.option-card{
+    background:linear-gradient(
+        145deg,
+        rgba(12,12,12,.95),
+        rgba(5,5,5,.95)
+    );
+
+    border:2px solid rgba(255,69,0,.25);
+
+    border-radius:18px;
+
+    padding:1.5rem;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.3s ease;
+
+    color:white;
+}
+
+.option-card i{
+    font-size:2rem;
+    color:#ff4500;
+    display:block;
+    margin-bottom:.8rem;
+}
+
+.option-card span{
+    font-size:1.1rem;
+    font-weight:700;
+}
+
+.option-card:hover{
+    transform:translateY(-4px);
+    border-color:#ff4500;
+    box-shadow:0 0 25px rgba(255,69,0,.25);
+}
+
+input[type="radio"]:checked + .option-card{
+    border-color:#ff4500;
+
+    background:linear-gradient(
+        145deg,
+        rgba(255,69,0,.18),
+        rgba(25,5,0,.95)
+    );
+
+    box-shadow:
+        0 0 30px rgba(255,69,0,.35);
+}
+.perfil-preview-zone{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.perfil-preview-zone img{
+    width:220px;
+    height:220px;
+    object-fit:cover;
+    border-radius:20px;
+
+    border:2px solid rgba(255,69,0,.8);
+
+    box-shadow:
+        0 0 30px rgba(255,69,0,.35);
+}
+
+.upload-placeholder{
+    text-align:center;
+}
+.edit-banner-section{
+    background:
+        radial-gradient(circle at top right, rgba(255,69,0,.12), transparent 40%),
+        linear-gradient(145deg, rgba(15,5,5,.95), rgba(0,0,0,.85));
+    border:1px solid rgba(255,69,0,.22);
+    border-radius:18px;
+    padding:1.5rem;
+}
+
+.banner-panel-header{
+    margin-bottom:1.5rem;
+}
+
+.banner-panel-header h3{
+    color:#ff4500;
+    font-family:'Bebas Neue', sans-serif;
+    font-size:2.4rem;
+    letter-spacing:2px;
+    margin:0;
+}
+
+.banner-panel-header p{
+    color:#aaa;
+    margin:.4rem 0 0;
+}
+
+.banner-options{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:1rem;
+}
+
+.banner-card{
+    cursor:pointer;
+    border:2px solid rgba(255,69,0,.22);
+    border-radius:18px;
+    overflow:hidden;
+    background:#060606;
+    transition:.3s ease;
+    position:relative;
+}
+
+.banner-card input{
+    display:none;
+}
+
+.banner-card img{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+    display:block;
+    filter:brightness(.8);
+    transition:.3s ease;
+}
+
+.banner-card span{
+    display:block;
+    text-align:center;
+    padding:1rem;
+    color:white;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.banner-card:hover{
+    transform:translateY(-4px);
+    border-color:#ff4500;
+    box-shadow:0 0 25px rgba(255,69,0,.25);
+}
+
+.banner-card:hover img{
+    filter:brightness(1);
+}
+
+.banner-card:has(input:checked){
+    border-color:#ff4500;
+    box-shadow:0 0 35px rgba(255,69,0,.45);
+}
+
+.banner-card:has(input:checked)::after{
+    content:"Seleccionado";
+    position:absolute;
+    top:12px;
+    right:12px;
+    background:#ff4500;
+    color:white;
+    padding:.4rem .7rem;
+    border-radius:999px;
+    font-size:.75rem;
+    font-weight:900;
+    text-transform:uppercase;
+}
+
+@media(max-width:768px){
+    .banner-options{
+        grid-template-columns:1fr;
+    }
 }
