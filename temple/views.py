@@ -5,11 +5,12 @@ from django.contrib.auth.views import LoginView, LogoutView
 from .forms import RegistroForm, PerfilForm, HistoriaDojoForm
 from .models import Perfil, HistoriaDojo,Evento
 from django.contrib import messages
-
-
+from .models import Perfil, HistoriaDojo, Evento, Notificacion
+from django.contrib.admin.views.decorators import staff_member_required
 import json
 from django.http import JsonResponse
-
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 def index(request):
     eventos = Evento.objects.filter(activo=True)
@@ -120,13 +121,31 @@ class CustomLoginView(LoginView):
 class CustomLogoutView(LogoutView):
     pass
 
+@login_required
+def marcar_notificacion_leida(request, notificacion_id):
+    notificacion = Notificacion.objects.get(
+        id=notificacion_id,
+        usuario=request.user
+    )
 
+    notificacion.leida = True
+    notificacion.save()
+
+    return JsonResponse({
+        'ok': True
+    })
 
 @login_required
 def perfil(request):
     perfil_obj, created = Perfil.objects.get_or_create(user=request.user)
     historias = HistoriaDojo.objects.filter(autor=request.user)
+    notificaciones = Notificacion.objects.filter(
+        usuario=request.user
+    )
 
+    notificaciones_no_leidas = notificaciones.filter(
+        leida=False
+    ).count()
     if request.method == 'POST':
         perfil_form = PerfilForm(request.POST, request.FILES, instance=perfil_obj)
         historia_form = HistoriaDojoForm(request.POST, request.FILES)
@@ -163,6 +182,8 @@ def perfil(request):
         'perfil_form': perfil_form,
         'historia_form': historia_form,
         'historias': historias,
+        'notificaciones': notificaciones,
+        'notificaciones_no_leidas': notificaciones_no_leidas,
     })
 
 
@@ -197,4 +218,87 @@ def toggle_galeria(request, publicacion_id):
         publicacion.save()
 
     return redirect('perfil')
-# Create your views here.
+
+@staff_member_required
+def admin_panel(request):
+    usuarios = User.objects.all().select_related('perfil')
+    eventos = Evento.objects.all().order_by('-fecha_creacion')
+    publicaciones = HistoriaDojo.objects.all().select_related('autor').order_by('-fecha_creacion')
+
+    return render(request, 'temple/admin_panel.html', {
+        'usuarios': usuarios,
+        'eventos': eventos,
+        'publicaciones': publicaciones,
+    })
+
+
+@staff_member_required
+def crear_evento_admin(request):
+    if request.method == 'POST':
+        Evento.objects.create(
+            titulo=request.POST.get('titulo'),
+            fecha=request.POST.get('fecha'),
+            lugar=request.POST.get('lugar'),
+            descripcion=request.POST.get('descripcion'),
+            imagen=request.FILES.get('imagen'),
+            activo=True
+        )
+    return redirect('admin_panel')
+
+
+@staff_member_required
+def eliminar_usuario_admin(request, user_id):
+    usuario = get_object_or_404(User, id=user_id)
+
+    if request.method == 'POST' and not usuario.is_superuser:
+        usuario.delete()
+
+    return redirect('admin_panel')
+
+
+@staff_member_required
+def aprobar_cinturon_admin(request, perfil_id):
+    perfil = get_object_or_404(Perfil, id=perfil_id)
+
+    if request.method == 'POST':
+        perfil.aprobado_por_admin = True
+        perfil.save()
+
+    return redirect('admin_panel')
+
+
+@staff_member_required
+def rechazar_cinturon_admin(request, perfil_id):
+    perfil = get_object_or_404(Perfil, id=perfil_id)
+
+    if request.method == 'POST':
+        perfil.color_cinturon_pendiente = ''
+        perfil.dan_pendiente = ''
+        perfil.aprobado_por_admin = False
+        perfil.save()
+
+    return redirect('admin_panel')
+
+
+@staff_member_required
+def eliminar_evento_admin(request, evento_id):
+    evento = get_object_or_404(Evento, id=evento_id)
+
+    if request.method == 'POST':
+        if evento.imagen:
+            evento.imagen.delete(save=False)
+        evento.delete()
+
+    return redirect('admin_panel')
+
+
+@staff_member_required
+def eliminar_publicacion_admin(request, publicacion_id):
+    publicacion = get_object_or_404(HistoriaDojo, id=publicacion_id)
+
+    if request.method == 'POST':
+        if publicacion.imagen:
+            publicacion.imagen.delete(save=False)
+        publicacion.delete()
+
+    return redirect('admin_panel')

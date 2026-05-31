@@ -1,0 +1,274 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Admin - Dojo Temple</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+</head>
+
+<body class="perfil-dashboard-body">
+
+<div class="perfil-dashboard">
+
+    <aside class="perfil-sidebar">
+
+        <div class="sidebar-logo">
+            <img src="{% static 'images/logo-dojo.png' %}" alt="Dojo Temple">
+            <h2>Admin Temple</h2>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="#usuarios" class="active">
+                <i class="fas fa-users"></i> Usuarios
+            </a>
+
+            <a href="#eventos">
+                <i class="fas fa-calendar"></i> Eventos
+            </a>
+
+            <a href="#publicaciones">
+                <i class="fas fa-scroll"></i> Publicaciones
+            </a>
+
+            <a href="{% url 'perfil' %}">
+                <i class="fas fa-user"></i> Mi Perfil
+            </a>
+
+            <a href="{% url 'index' %}">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </nav>
+
+    </aside>
+
+    <main class="perfil-main">
+
+        <section class="perfil-content-grid" id="usuarios">
+
+            <div class="dojo-card">
+
+                <h2 class="card-title">
+                    <i class="fas fa-users"></i> Usuarios Registrados
+                </h2>
+
+                {% for usuario in usuarios %}
+
+                <div class="notificacion-card">
+
+                    <div class="notif-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="notif-content">
+
+                        <h4>{{ usuario.username }}</h4>
+                        <p>{{ usuario.email|default:"Sin correo registrado" }}</p>
+
+                        <p>
+                            <strong>Cinturón actual:</strong>
+                            {{ usuario.perfil.color_cinturon|default:"Sin cinturón" }}
+                        </p>
+
+                        {% if usuario.perfil.color_cinturon_pendiente or usuario.perfil.dan_pendiente %}
+                            <p style="color:#ff4500;">
+                                <strong>Solicitud pendiente:</strong>
+                                {{ usuario.perfil.color_cinturon_pendiente|default:"Sin cinturón" }}
+
+                                {% if usuario.perfil.dan_pendiente %}
+                                    - {{ usuario.perfil.dan_pendiente }}
+                                {% endif %}
+                            </p>
+
+                            <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem;">
+
+                                <form method="POST" action="{% url 'aprobar_cinturon_admin' usuario.perfil.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-dojo">
+                                        <i class="fas fa-check"></i> Aprobar
+                                    </button>
+                                </form>
+
+                                <form method="POST" action="{% url 'rechazar_cinturon_admin' usuario.perfil.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-delete-post">
+                                        <i class="fas fa-xmark"></i> Rechazar
+                                    </button>
+                                </form>
+
+                            </div>
+                        {% else %}
+                            <small>Sin solicitudes pendientes</small>
+                        {% endif %}
+
+                        {% if not usuario.is_superuser %}
+                        <form method="POST"
+                              action="{% url 'eliminar_usuario_admin' usuario.id %}"
+                              style="margin-top:1rem;">
+                            {% csrf_token %}
+
+                            <button type="submit"
+                                    class="btn-delete-post"
+                                    onclick="return confirm('¿Eliminar este perfil?');">
+                                <i class="fas fa-trash"></i> Eliminar perfil
+                            </button>
+                        </form>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <p style="color:#777;">No hay usuarios registrados.</p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        <section class="perfil-content-grid" id="eventos">
+
+            <div class="dojo-card">
+
+                <h2 class="card-title">
+                    <i class="fas fa-calendar-plus"></i> Crear Evento
+                </h2>
+
+                <form method="POST"
+                      enctype="multipart/form-data"
+                      action="{% url 'crear_evento_admin' %}">
+
+                    {% csrf_token %}
+
+                    <label class="form-label">Título</label>
+                    <input type="text" name="titulo" class="dojo-input form-control" required>
+
+                    <label class="form-label">Fecha</label>
+                    <input type="text" name="fecha" class="dojo-input form-control" placeholder="Ej: 15 de junio, 18:00 hrs" required>
+
+                    <label class="form-label">Lugar</label>
+                    <input type="text" name="lugar" class="dojo-input form-control" required>
+
+                    <label class="form-label">Descripción</label>
+                    <textarea name="descripcion" class="dojo-input form-control" required></textarea>
+
+                    <label class="form-label">Imagen</label>
+                    <input type="file" name="imagen" class="dojo-input form-control">
+
+                    <button type="submit" class="btn-dojo mt-3">
+                        <i class="fas fa-plus"></i> Crear Evento
+                    </button>
+
+                </form>
+
+            </div>
+
+            <div class="dojo-card">
+
+                <h2 class="card-title">
+                    <i class="fas fa-calendar"></i> Eventos Publicados
+                </h2>
+
+                {% for evento in eventos %}
+
+                <div class="notificacion-card">
+
+                    <div class="notif-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+
+                    <div class="notif-content">
+
+                        <h4>{{ evento.titulo }}</h4>
+                        <p>{{ evento.fecha }} - {{ evento.lugar }}</p>
+                        <p>{{ evento.descripcion|truncatechars:150 }}</p>
+
+                        <form method="POST" action="{% url 'eliminar_evento_admin' evento.id %}">
+                            {% csrf_token %}
+
+                            <button type="submit"
+                                    class="btn-delete-post"
+                                    onclick="return confirm('¿Eliminar este evento?');">
+                                <i class="fas fa-trash"></i> Eliminar evento
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <p style="color:#777;">No hay eventos publicados.</p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        <section class="perfil-content-grid" id="publicaciones">
+
+            <div class="dojo-card">
+
+                <h2 class="card-title">
+                    <i class="fas fa-scroll"></i> Publicaciones
+                </h2>
+
+                {% for pub in publicaciones %}
+
+                <div class="notificacion-card">
+
+                    <div class="notif-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+
+                    <div class="notif-content">
+
+                        <h4>{{ pub.titulo }}</h4>
+                        <p>Autor: {{ pub.autor.username }}</p>
+                        <p>{{ pub.descripcion|truncatechars:150 }}</p>
+
+                        {% if pub.imagen %}
+                            <img src="{{ pub.imagen.url }}"
+                                 style="width:180px; height:120px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,69,0,.4); margin-bottom:1rem;">
+                        {% endif %}
+
+                        <form method="POST" action="{% url 'eliminar_publicacion_admin' pub.id %}">
+                            {% csrf_token %}
+
+                            <button type="submit"
+                                    class="btn-delete-post"
+                                    onclick="return confirm('¿Eliminar esta publicación?');">
+                                <i class="fas fa-trash"></i> Eliminar publicación
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <p style="color:#777;">No hay publicaciones.</p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

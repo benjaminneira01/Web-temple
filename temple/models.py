@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Perfil(models.Model):
 
@@ -112,6 +113,7 @@ class Evento(models.Model):
     def __str__(self):
         return self.titulo
 
+
 class CombatePactado(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='combates')
     titulo = models.CharField(max_length=150)
@@ -120,4 +122,35 @@ class CombatePactado(models.Model):
 
     def __str__(self):
         return f"{self.titulo} - {self.evento.titulo}"
-# Create your models here.
+    
+class Notificacion(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    evento = models.ForeignKey(Evento, on_delete=models.CASCADE, null=True, blank=True)
+
+    titulo = models.CharField(max_length=150)
+    mensaje = models.TextField()
+    leida = models.BooleanField(default=False)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-fecha_creacion']
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.titulo}"
+
+@receiver(post_save, sender=Evento)
+def crear_notificacion_evento(sender, instance, created, **kwargs):
+    if created and instance.activo:
+        usuarios = User.objects.all()
+
+        notificaciones = [
+            Notificacion(
+                usuario=usuario,
+                evento=instance,
+                titulo='Nuevo evento disponible',
+                mensaje=f'Se ha publicado un nuevo evento: {instance.titulo}'
+            )
+            for usuario in usuarios
+        ]
+
+        Notificacion.objects.bulk_create(notificaciones)

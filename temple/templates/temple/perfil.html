@@ -42,6 +42,17 @@
                 <i class="fas fa-plus"></i> Crear Publicación
             </a>
 
+            <a href="#notificaciones">
+                <i class="fas fa-bell"></i>
+                Notificaciones
+
+                {% if notificaciones_no_leidas > 0 %}
+                <span class="notif-badge">
+                    {{ notificaciones_no_leidas }}
+                </span>
+                {% endif %}
+            </a>
+
             <a href="#publicaciones">
                 <i class="fas fa-scroll"></i>
                 Mis Publicaciones
@@ -164,12 +175,18 @@
                                 <i class="fas fa-user"></i>
                                 Información
                             </button>
-                            
+
                             <button type="button" class="edit-tab" data-edit-tab="banner">
                                 <i class="fas fa-image"></i>
                                 Banner
                             </button>
 
+                            {% if request.user.is_staff %}
+                            <a href="{% url 'admin_panel' %}">
+                                <i class="fas fa-user-shield"></i>
+                                Panel Admin
+                            </a>
+                            {% endif %}
 
                             <button type="button" class="edit-tab" data-edit-tab="foto">
                                 <i class="fas fa-camera"></i>
@@ -181,10 +198,6 @@
                                 Seguridad
                             </button>
 
-                            <button type="button" class="edit-tab disabled-tab">
-                                <i class="fas fa-bell"></i>
-                                Notificaciones
-                            </button>
 
                         </div>
 
@@ -326,6 +339,7 @@
                                 </div>
 
                             </div>
+                            
                             <div class="edit-banner-section edit-panel" id="edit-banner">
 
                                 <div class="banner-panel-header">
@@ -453,6 +467,51 @@
                     </form>
 
                 </div>
+
+            </div>
+
+        </section>
+
+        <section class="notificaciones-section" id="notificaciones">
+
+            <div class="dojo-card">
+
+                <h2 class="card-title">
+                    <i class="fas fa-bell"></i>
+                    Notificaciones
+                </h2>
+
+                {% for notificacion in notificaciones %}
+
+                <div class="notificacion-card {% if not notificacion.leida %}no-leida{% endif %}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#eventoModal{{ notificacion.evento.id }}"
+                    onclick="marcarNotificacionLeida({{ notificacion.id }}, this)"
+                    style="cursor:pointer;">
+
+                    <div class="notif-icon">
+                        <i class="fas fa-calendar-star"></i>
+                    </div>
+
+                    <div class="notif-content">
+                        <h4>{{ notificacion.titulo }}</h4>
+                        <p>{{ notificacion.mensaje }}</p>
+                        <small>{{ notificacion.fecha_creacion }}</small>
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <div class="empty-notifications">
+
+                    <i class="fas fa-bell-slash"></i>
+
+                    <p>No tienes notificaciones.</p>
+
+                </div>
+
+                {% endfor %}
 
             </div>
 
@@ -737,5 +796,34 @@ function previewPerfilImage(event){
     }
 }
 </script>
+
+<script>
+function marcarNotificacionLeida(notificacionId, elemento){
+    fetch(`/notificacion/leida/${notificacionId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.ok){
+            elemento.classList.remove('no-leida');
+
+            const badge = document.querySelector('.notif-badge');
+            if(badge){
+                let total = parseInt(badge.innerText);
+
+                if(total <= 1){
+                    badge.remove();
+                }else{
+                    badge.innerText = total - 1;
+                }
+            }
+        }
+    });
+}
+</script>
+
 </body>
 </html>
